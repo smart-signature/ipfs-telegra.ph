@@ -1,3 +1,32 @@
+
+import ScatterJS from 'scatterjs-core';
+import ScatterEOS from 'scatterjs-plugin-eosjs';
+import Eos from 'eosjs';
+
+ScatterJS.plugins(new ScatterEOS());
+const eos = () => ScatterJS.scatter.eos(config.network2.eos, Eos, { expireInSeconds: 60 });
+const currentEOSAccount = () => ScatterJS.scatter.identity && ScatterJS.scatter.identity.accounts.find(x => x.blockchain === 'eos');
+
+const login = async () => {
+  const requiredFields = { accounts: [config.network2] };
+  return ScatterJS.scatter.getIdentity(requiredFields);
+}
+/*
+const createToken = ({
+  to,
+  memo = '', 
+  amount = 0,
+}) => {
+  return eos().transfer(
+currentEOSAccount().name, 
+to, 
+amount
+`0.1000 EOS`,
+memo,
+  );
+};
+*/
+
 var T = {"apiUrl":"https:\/\/edit.telegra.ph","datetime":0,"pageId":0};
 
 let ua = navigator.userAgent.toLowerCase();
@@ -1409,6 +1438,10 @@ function savePage() {
   });
 }
 
+function login() {
+
+}
+
 function startTelegraph() {
     $tl_article.addClass('tl_article_edit');
 
@@ -1616,6 +1649,7 @@ let $embed_button     = $('#_embed_button');
 
 let $edit_button      = $('#_edit_button');
 let $publish_button   = $('#_publish_button');
+let $login_button     = $('#_login_button')
 
 let $account          = $('.account');
 let $error_msg        = $('#_error_msg');
@@ -1827,6 +1861,10 @@ $embed_button.click(function(e) {
 $publish_button.click(function() {
   savePage();
 });
+
+$login_button.click(function() {
+  login();
+})
 
 $edit_button.click(function() {
   updateEditable(true);
