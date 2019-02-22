@@ -1352,7 +1352,7 @@ function savePage() {
     quill.selection.scrollIntoView();
     return showError('Title is too small');
   }
-
+  login();
 
   $('body').addClass('publishing')
   $tl_article.addClass('tl_article_saving');
@@ -1438,9 +1438,57 @@ function savePage() {
   });
 }
 
-function login() {
+function login(){
+  var network = {blockchain:'eos', protocol:'https', host:'api.eosbeijing.one', port:443, chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'};
 
+  var eos = scatter.eos(network, Eos);
+  console.log('id before', scatter.identity)
+  scatter.forgetIdentity().then(function(){
+      scatter.getIdentity({accounts:[network]}).then(function(id){
+          const account = id.accounts.find(function(x){ return x.blockchain === 'eos' });
+          console.log('acc', account);
+
+          eos.transaction({
+            actions: [
+                {
+                    account: 'signature.bp',
+                    name:    'create',
+                    authorization: [{
+                        actor:      account.name,
+                        permission: account.authority
+                    }],
+                    data: {
+                        from:    account.name
+                    }
+                }
+            ]
+        }).then(result => {
+          alert('success!');
+        }).catch(error => {
+          alert('error:'+JSON.stringify(error));
+        });
+      
+          /*
+          eos.contract("signature.bp").then(contr => {
+            contr.create(account.name, 2, {
+              authorization: [{ actor:account.name, permission:account.authority}]
+            }).then(result => {
+                console.log(result);
+            });
+          });
+          
+          /*
+          eos.transfer(account.name, 'signatu', '0.0001 EOS', '').then(function(res){
+              console.log('res', res);
+          }).catch(function(err){
+              console.log('err', err);
+          })
+          */
+      })
+  })
 }
+
+
 
 function startTelegraph() {
     $tl_article.addClass('tl_article_edit');
