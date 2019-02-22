@@ -19,9 +19,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "eosjs": "^16.0.9",
-    "scatterjs-core": "^2.7.11",
-    "scatterjs-plugin-eosjs": "^1.5.1"
   },
   "devDependencies": {
     "ipscend": "alexstep/ipscend",
