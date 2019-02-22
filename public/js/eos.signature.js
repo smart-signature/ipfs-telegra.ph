@@ -170,7 +170,7 @@ function logout() {
   }
 }
 
-function publish(){
+const publish =  function(){
   if (currentAccount == null) {
       alert('请先登录');
   }
@@ -188,7 +188,7 @@ function publish(){
               }],
               data: {
               from:    currentAccount.name,
-              fission_factor: 2
+              fission_factor: 2000
               }
           }
       ]

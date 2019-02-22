@@ -1302,7 +1302,8 @@ function showError(error) {
   }, 3000);
 }
 
-function savePage() {
+async function savePage() {
+
   if ($tl_article.hasClass('tl_article_saving')) {
     return false;
   }
@@ -1311,7 +1312,6 @@ function savePage() {
   let author     = $('address', $tl_content).text();
   let author_url = $('address a', $tl_content).attr('href') || '';
   
-  publish();
   if (title.length < 2) {
     clearTimeout($tl_article.to);
     $tl_article.addClass('title_required');
@@ -1324,6 +1324,7 @@ function savePage() {
     quill.selection.scrollIntoView();
     return showError('Title is too small');
   }
+  await publish();
 
   $('body').addClass('publishing')
   $tl_article.addClass('tl_article_saving');
