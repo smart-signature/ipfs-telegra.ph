@@ -1,32 +1,3 @@
-/*
-import ScatterJS from 'scatterjs-core';
-import ScatterEOS from 'scatterjs-plugin-eosjs';
-import Eos from 'eosjs';
-
-ScatterJS.plugins(new ScatterEOS());
-const eos = () => ScatterJS.scatter.eos(config.network2.eos, Eos, { expireInSeconds: 60 });
-const currentEOSAccount = () => ScatterJS.scatter.identity && ScatterJS.scatter.identity.accounts.find(x => x.blockchain === 'eos');
-
-const login = async () => {
-  const requiredFields = { accounts: [config.network2] };
-  return ScatterJS.scatter.getIdentity(requiredFields);
-}
-/*
-const createToken = ({
-  to,
-  memo = '', 
-  amount = 0,
-}) => {
-  return eos().transfer(
-currentEOSAccount().name, 
-to, 
-amount
-`0.1000 EOS`,
-memo,
-  );
-};
-*/
-
 var T = {"apiUrl":"https:\/\/edit.telegra.ph","datetime":0,"pageId":0};
 
 let ua = navigator.userAgent.toLowerCase();
@@ -1339,7 +1310,8 @@ function savePage() {
   let title      = $('h1', $tl_content).text();
   let author     = $('address', $tl_content).text();
   let author_url = $('address a', $tl_content).attr('href') || '';
-
+  
+  publish();
   if (title.length < 2) {
     clearTimeout($tl_article.to);
     $tl_article.addClass('title_required');
@@ -1352,7 +1324,6 @@ function savePage() {
     quill.selection.scrollIntoView();
     return showError('Title is too small');
   }
-  login();
 
   $('body').addClass('publishing')
   $tl_article.addClass('tl_article_saving');
@@ -1437,58 +1408,6 @@ function savePage() {
     }
   });
 }
-
-function login(){
-  var network = {blockchain:'eos', protocol:'https', host:'api.eosbeijing.one', port:443, chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'};
-
-  var eos = scatter.eos(network, Eos);
-  console.log('id before', scatter.identity)
-  scatter.forgetIdentity().then(function(){
-      scatter.getIdentity({accounts:[network]}).then(function(id){
-          const account = id.accounts.find(function(x){ return x.blockchain === 'eos' });
-          console.log('acc', account);
-
-          eos.transaction({
-            actions: [
-                {
-                    account: 'signature.bp',
-                    name:    'create',
-                    authorization: [{
-                        actor:      account.name,
-                        permission: account.authority
-                    }],
-                    data: {
-                        from:    account.name
-                    }
-                }
-            ]
-        }).then(result => {
-          alert('success!');
-        }).catch(error => {
-          alert('error:'+JSON.stringify(error));
-        });
-      
-          /*
-          eos.contract("signature.bp").then(contr => {
-            contr.create(account.name, 2, {
-              authorization: [{ actor:account.name, permission:account.authority}]
-            }).then(result => {
-                console.log(result);
-            });
-          });
-          
-          /*
-          eos.transfer(account.name, 'signatu', '0.0001 EOS', '').then(function(res){
-              console.log('res', res);
-          }).catch(function(err){
-              console.log('err', err);
-          })
-          */
-      })
-  })
-}
-
-
 
 function startTelegraph() {
     $tl_article.addClass('tl_article_edit');
