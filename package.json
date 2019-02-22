@@ -22,6 +22,6 @@
   },
   "devDependencies": {
     "ipscend": "alexstep/ipscend",
-    "serve": "^6.0.6"
+    "serve": ">=7.0.0"
   }
 }
