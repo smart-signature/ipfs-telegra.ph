@@ -26,3 +26,13 @@ npm run deploy
  * https://github.com/silentcicero/ipfs-mini
  * http://telegra.ph
  * https://www.cachep2p.com
+
+
+## FAQ
+
+> prototype-website/node_modules/ipfsd-ctl/node_modules/go-ipfs-dep/src/index.js:102
+      if (res.statusCode !== 200) {
+              ^
+TypeError: Cannot read property 'statusCode' of undefined
+
+https://github.com/ipfs/go-ipfs/issues/5883#issuecomment-455150852
