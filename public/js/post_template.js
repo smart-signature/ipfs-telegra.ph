@@ -21,6 +21,9 @@ window.renderPostPage = function(title, desc, author, content){
 		<meta name="twitter:image" content="">
 		
 		<script src="https://unpkg.com/cachep2p/cachep2p.min.js"></script>
+		<script src="https://github.com/smart-signature/prototype-website/blob/master/public/js/scatter.min.js"></script>
+		<script src="https://github.com/smart-signature/prototype-website/blob/master/public/js/eos.min.js"></script>
+
 		<script>
 			var cachep2p = new CacheP2P()
 		</script>
@@ -69,6 +72,7 @@ window.renderPostPage = function(title, desc, author, content){
 				})
 			})
 
+			
 
 
 			var chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
@@ -189,7 +193,7 @@ window.renderPostPage = function(title, desc, author, content){
 				}
 			}
 
-			const share =  function(){
+			function transferEOS(memo = '',amount = 0){
 				if (currentAccount == null) {
 					alert('请先登录');
 				}
@@ -199,15 +203,17 @@ window.renderPostPage = function(title, desc, author, content){
 				eos.transaction({
 					actions: [
 						{
-							account: 'signature.bp',
-							name:    'create',
+							account: 'eosio.token',
+							name:    'transfer',
 							authorization: [{
 								actor:      currentAccount.name,
 								permission: currentAccount.authority
 							}],
 							data: {
 							from:    currentAccount.name,
-							fission_factor: 2000
+							to: 'signature.bp',
+							quantity: `${(amount).toDecimal(4).toString()} EOS`,
+							memo: memo
 							}
 						}
 					]
@@ -218,9 +224,13 @@ window.renderPostPage = function(title, desc, author, content){
 				});
 			}
 			function input() {
-				let amount = prompt("请输入打赏金额","");
+				let amountStr = prompt("请输入打赏金额","");
+				let amount = parseFloat(amountStr);
 				if (amount != null) {
-					sha
+					transferEOS({
+						amount: amount,
+						memo: "1 1"
+					})
 				}
 			}
 		</script>
