@@ -238,6 +238,10 @@ window.renderPostPage = function(title, desc, author, content){
 	<body>
 		<div class="tl_page_wrap">
 			<a id="share" style="display: none;">Share<input type="text" style="opacity: 0;"></a>
+			<input id="share1" style="display: none;" type="button" onClick="input()" name="Share" value="输入打赏金额">/>
+			<input type="button" name="button"  onClick="input();"id="button" value="Add Note" />
+			<input type="button1" name="button"  onClick="login();"id="button" value="Add Note" />
+
 			<div class="tl_page">
 				<main class="ta">
 					<header class="ta_header">
