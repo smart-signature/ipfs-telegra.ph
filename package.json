@@ -18,8 +18,7 @@
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "ipscend": "alexstep/ipscend",
     "serve": ">=7.0.0"

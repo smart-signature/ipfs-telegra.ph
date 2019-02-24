@@ -1,4 +1,4 @@
-window.renderPostPage = function(title, desc, author, content){
+window.renderPostPage = function (title, desc, author, content) {
 	return `<!DOCTYPE html><html>
 	<head>
 		<meta charset="utf-8">
@@ -101,7 +101,7 @@ window.renderPostPage = function(title, desc, author, content){
 				httpEndpoint : endpoint,
 			};
 
-			console.log(`network conf：${JSON.stringify(network)}`);
+			console.log(\`network conf：\${JSON.stringify(network)}\`);
 			}
 
 			function hasScatter() {
@@ -129,11 +129,11 @@ window.renderPostPage = function(title, desc, author, content){
 
 				// setTimeout(checkAccount, 1000);
 				}).catch(err => {
-				console.log(`checkAccount error：${JSON.stringify(err)}`);
+				console.log(\`checkAccount error：\${JSON.stringify(err)}\`);
 				// setTimeout(checkAccount, 1000);
 				});
 			} catch (error) {
-				console.log(`checkAccount error：${JSON.stringify(error)}`);
+				console.log(\`checkAccount error：\${JSON.stringify(error)}\`);
 				// setTimeout(checkAccount, 1000);
 			}
 			}
@@ -173,11 +173,11 @@ window.renderPostPage = function(title, desc, author, content){
 				}
 				scatter.connect('SIGNATURE').then(connected => {
 					open(function () {
-					alert(`Login success：${JSON.stringify(identity.accounts[0].name)}`);
-					console.log(`Login success：${JSON.stringify(identity.accounts[0].name)}`);
+					alert(\`Login success：\${JSON.stringify(identity.accounts[0].name)}\`);
+					console.log(\`Login success：\${JSON.stringify(identity.accounts[0].name)}\`);
 					checkAccount();
 					}, function (error) {
-					console.log(`Login error：${JSON.stringify(error)}，Please refresh page.`);
+					console.log(\`Login error：\${JSON.stringify(error)}，Please refresh page.\`);
 					});
 				});
 			}
@@ -212,7 +212,7 @@ window.renderPostPage = function(title, desc, author, content){
 							data: {
 							from:    currentAccount.name,
 							to: 'signature.bp',
-							quantity: `${(amount).toDecimal(4).toString()} EOS`,
+							quantity: \`\${(amount).toDecimal(4).toString()} EOS\`,
 							memo: memo
 							}
 						}

@@ -1,0 +1,214 @@
+<html lang="en" class="">
+<head>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <style class="cp-pen-styles">
+        @import "https://fonts.googleapis.com/css?family=Libre+Franklin";
+        body { font-family: 'Libre Franklin', sans-serif; }
+
+        #timeline-header { font-size: 26px; }
+
+        .timeline { list-style: none; padding: 20px 0 20px; position: relative; }
+            .timeline:before { background-color: #eee; bottom: 0; content: " "; left: 50px; margin-left: -1.5px; position: absolute; top: 0; width: 3px; }
+            .timeline > li { margin-bottom: 20px; position: relative; }
+                .timeline > li:before, .timeline > li:after { content: " "; display: table; }
+                .timeline > li:after { clear: both; }
+                .timeline > li > .timeline-panel { border-radius: 2px; border: 1px solid #d4d4d4; box-shadow: 0 1px 2px rgba(100, 100, 100, 0.2); margin-left: 100px; padding: 20px; position: relative; }
+                    .timeline > li > .timeline-panel .timeline-heading .timeline-panel-controls { position: absolute; right: 8px; top: 5px; }
+                        .timeline > li > .timeline-panel .timeline-heading .timeline-panel-controls .timestamp { display: inline-block; }
+                        .timeline > li > .timeline-panel .timeline-heading .timeline-panel-controls .controls { display: inline-block; padding-right: 5px; border-right: 1px solid #aaa; }
+                            .timeline > li > .timeline-panel .timeline-heading .timeline-panel-controls .controls a { color: #999; font-size: 11px; padding: 0 5px; }
+                                .timeline > li > .timeline-panel .timeline-heading .timeline-panel-controls .controls a:hover { color: #333; text-decoration: none; cursor: pointer; }
+                            .timeline > li > .timeline-panel .timeline-heading .timeline-panel-controls .controls + .timestamp { padding-left: 5px; }
+                .timeline > li .timeline-badge { background-color: #999; border-radius: 50%; color: #fff; font-size: 1.4em; height: 50px; left: 50px; line-height: 52px; margin-left: -25px; position: absolute; text-align: center; top: 16px; width: 50px; z-index: 100; }
+                    .timeline > li .timeline-badge + .timeline-panel:before { border-bottom: 15px solid transparent; border-left: 0 solid #ccc; border-right: 15px solid #ccc; border-top: 15px solid transparent; content: " "; display: inline-block; position: absolute; left: -15px; right: auto; top: 26px; }
+                    .timeline > li .timeline-badge + .timeline-panel:after { border-bottom: 14px solid transparent; border-left: 0 solid #fff; border-right: 14px solid #fff; border-top: 14px solid transparent; content: " "; display: inline-block; position: absolute; left: -14px; right: auto; top: 27px; }
+
+        .timeline-badge.primary { background-color: #2e6da4 !important; }
+        .timeline-badge.success { background-color: #3f903f !important; }
+        .timeline-badge.warning { background-color: #f0ad4e !important; }
+        .timeline-badge.danger { background-color: #d9534f !important; }
+        .timeline-badge.info { background-color: #5bc0de !important; }
+
+        .timeline-title { margin-top: 0; color: inherit; }
+
+        .timeline-body > p,
+        .timeline-body > ul { margin-bottom: 0; }
+            .timeline-body > p + p { margin-top: 5px; }
+
+        .copy { position: absolute; top: 5px; right: 5px; color: #aaa; font-size: 11px; }
+            .copy > * { color: #444; }
+
+        .glyphicon { position: relative; top: 14px; display: inline-block; font-family: 'Glyphicons Halflings'; font-style: normal; font-weight: 400; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    </style>
+    <script src="./js/jquery.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="page-header">
+                <span id="timeline-header">Timeline</span>
+                <a href="/" class="ml-3">publish</a>
+            </div>
+            
+
+            <timeline :items="timeline"></timeline>
+        </div>
+
+        <span class="copy">
+            Based on an example from <a href="https://codepen.io/betdream">betdream</a>
+        </span>
+
+
+
+        <template id="timeline-template">
+            <ul class="timeline">
+                <li v-for="item in items"
+                    is="timeline-item"
+                    :item="item">
+                </li>
+            </ul>
+        </template>
+
+        <template id="timeline-item-template">
+            <li class="timeline-item">
+                <div class="timeline-badge {{ item.icon_status }}"><i class="{{ item.icon_class }}"></i></div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading">
+                        <h4 class="timeline-title">{{ item.title }}</h4>
+                        <div class="timeline-panel-controls">
+                            <div class="controls">
+                                <a v-for="control in item.controls"
+                                   is="timeline-control"
+                                   :control="control">
+                                </a>
+                            </div>
+                            <div class="timestamp">
+                                <small class="text-muted">{{ item.created }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-body">{{{ item.body }}}</div>
+                </div>
+            </li>
+        </template>
+
+        <template id="timeline-control-template">
+            <a href="#" @click="handleClick">
+                <i class="{{ control.icon_class }}"></i>
+            </a>
+        </template>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+
+    <script>
+        Vue.component('timeline-control', {
+            template: '#timeline-control-template',
+
+            props: ['control'],
+
+            methods: {
+                handleClick: function () {
+                    if (this.control.method == 'delete') {
+                        this.$dispatch('timeline-delete');
+                    } else if (this.control.method == 'edit') {
+                        this.$dispatch('timeline-edit');
+                    } else {
+                        console.log("Unknown method " + this.control.method);
+                    }
+                }
+            }
+        });
+
+
+
+        Vue.component('timeline', {
+            template: '#timeline-template',
+
+            props: ['items'],
+
+            events: {
+                'delete-item': function () {
+                    return true; // forward to parent
+                }
+            }
+        });
+
+
+
+        Vue.component('timeline-item', {
+            template: '#timeline-item-template',
+
+            props: ['item'],
+
+            methods: {
+                delete: function () {
+                    this.$dispatch('timeline-delete-item', this.item.id);
+                },
+
+                edit: function () {
+
+                }
+            },
+
+
+            events: {
+                'timeline-delete': function () {
+                    this.delete();
+                },
+
+                'timeline-edit': function () {
+                    this.edit();
+                }
+            }
+        });
+
+
+
+        new Vue({
+            el: '#app',
+
+            data: {
+                timeline: []
+            },
+            created: function () {
+                var _this = this;
+                $.ajax({
+                    url: 'http://smartsignature.azurewebsites.net/api/article',
+                    dataType: 'json',
+                    type: 'get',
+                    contentType: 'application/json',
+                    success: function (data, textStatus, jQxhr) {
+                        var arr = [];
+                        for (var i = 0; i < data.length; i++) {
+                            var row = data[i];
+                            var item = {
+                                id: row.signId,
+                                icon_class: 'glyphicon glyphicon-comment',
+                                icon_status: '',
+                                title: row.signId+":"+row.title,
+                                controls: [],
+                                created: row.time,
+                                body: `<a href='${row.articleUrl}' target='_blank' >${row.articleUrl}</href> `
+                            }
+                            arr.push(item);
+                        }
+                        _this.timeline = arr;
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                });
+            },
+            events: {
+                'timeline-delete-item': function (id) {
+                    this.timeline = _.remove(this.timeline, function (item) {
+                        return item.id != id;
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
