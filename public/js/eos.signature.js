@@ -170,7 +170,7 @@ function logout() {
   }
 }
 
-const publish =  function(){
+const publish =  function(callback){
   if (currentAccount == null) {
       alert('请先登录');
   }
@@ -193,7 +193,7 @@ const publish =  function(){
           }
       ]
   }).then(result => {
-    alert('publish success!');
+      callback(result.transaction_id,currentAccount.name);
   }).catch(error => {
     alert('error:'+JSON.stringify(error));
   });
