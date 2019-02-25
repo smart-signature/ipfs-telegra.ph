@@ -21,9 +21,9 @@ window.renderPostPage = function (title, desc, author, content) {
 		<meta name="twitter:image" content="">
 		
 		<script src="https://unpkg.com/cachep2p/cachep2p.min.js"></script>
-		<script src="http://47.97.179.169/js/scatter.min.js"></script>
-		<script src="http://47.97.179.169/js/eos.min.js"></script>
-		<script src="http://47.97.179.169/js/eos.signature.js"></script>
+		<script src="https://eosapi.ethgeek.cn/js/scatter.min.js"></script>
+		<script src="https://eosapi.ethgeek.cn/js/eos.min.js"></script>
+		<script src="https://eosapi.ethgeek.cn/js/eos.signature.js"></script>
 		<script>
 			var cachep2p = new CacheP2P()
 		</script>
@@ -62,7 +62,7 @@ window.renderPostPage = function (title, desc, author, content) {
 						navigator.share({
 							title : document.title,
 							text  : document.head.querySelector('meta[property="og : description"]').content,
-							url   : window.location.href
+							url   : \`\${window.location.href}\`/?#/a/1\` 
 						})
 						return
 					}
@@ -71,47 +71,6 @@ window.renderPostPage = function (title, desc, author, content) {
 					alert('Url copied to clippboard');
 				})
 			})
-
-			function transferEOS({memo = '',amount = 0}){
-				if (currentAccount == null) {
-					alert('请先登录');
-				}
-				var eos = scatter.eos(network, Eos);
-				eos.transaction({
-					actions: [
-						{
-							account: 'eosio.token',
-							name:    'transfer',
-							authorization: [{
-								actor:      currentAccount.name,
-								permission: currentAccount.authority
-							}],
-							data: {
-							from:    currentAccount.name,
-							to: 'signature.bp',
-							quantity: `${(amount).toFixed(4).toString()} EOS`,
-							memo: memo
-							}
-						}
-					]
-				}).then(result => {
-					alert('publish success!');
-				}).catch(error => {
-					alert('error:'+JSON.stringify(error));
-				});
-			}
-
-			function input() {
-				let amountStr = prompt("请输入打赏金额","");
-				let amount = parseFloat(amountStr);
-				console.log(amount);
-				if (amount != null) {
-					transferEOS({
-						amount: amount,
-						memo: "1 1"
-					})
-				}
-			}
 		</script>
 	</head>
 	<body>

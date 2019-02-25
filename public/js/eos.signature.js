@@ -198,3 +198,78 @@ const publish =  function(callback){
     alert('error:'+JSON.stringify(error));
   });
 }
+
+
+function transferEOS({memo = '',amount = 0}){
+  if (currentAccount == null) {
+    alert('请先登录');
+  }
+  var eos = scatter.eos(network, Eos);
+  eos.transaction({
+    actions: [
+      {
+        account: 'eosio.token',
+        name:    'transfer',
+        authorization: [{
+          actor:      currentAccount.name,
+          permission: currentAccount.authority
+        }],
+        data: {
+        from:    currentAccount.name,
+        to: 'signature.bp',
+        quantity: `${(amount).toFixed(4).toString()} EOS`,
+        memo: memo
+        }
+      }
+    ]
+  }).then(result => {
+    alert('publish success!');
+  }).catch(error => {
+    alert('error:'+JSON.stringify(error));
+  });
+}
+
+function input() {
+  let amountStr = prompt("请输入打赏金额","");
+  let amount = parseFloat(amountStr);
+  console.log(amount);
+  if (amount != null) {
+    transferEOS({
+      amount: amount,
+      memo: "1 1"
+    })
+  }
+}
+
+function getInviteCode () {
+  const inviteArr = window.location.hash.split('/invite/');
+  return inviteArr.length === 2 ? inviteArr[1] : '';
+}
+
+function getSharesInfo() {
+  const { rows } = eos.getTableRows({
+    json: true,
+    code: 'signature.bp',
+    scope: 'signature.bp',
+    table: 'Shares',
+    limit: 256,
+  });
+  return rows;
+}
+
+function getMaxShareId() {
+  var rows = getSharesInfo();
+  var len = rows.length;
+  var maxId = 0;
+
+  for (var i = 0; i < len; i++) {
+    for (obj in rows[i])
+    {
+      if (obj.id > maxId) {
+        maxId = obj.id;
+      }
+    }
+  }
+
+  return maxId;
+}
