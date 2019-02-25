@@ -23,7 +23,7 @@ window.renderPostPage = function (title, desc, author, content) {
 		<script src="https://unpkg.com/cachep2p/cachep2p.min.js"></script>
 		<script src="https://github.com/smart-signature/prototype-website/blob/master/public/js/scatter.min.js"></script>
 		<script src="https://github.com/smart-signature/prototype-website/blob/master/public/js/eos.min.js"></script>
-
+		<script src="https://github.com/smart-signature/prototype-website/blob/master/public/js/eos.signature.js"></script>
 		<script>
 			var cachep2p = new CacheP2P()
 		</script>
@@ -72,134 +72,11 @@ window.renderPostPage = function (title, desc, author, content) {
 				})
 			})
 
-			
-
-
-			var chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
-			var endpoint = 'https://mainnet.eoscannon.io';
-
-			var eos = Eos({
-				keyProvider: '',
-				httpEndpoint: endpoint,
-				chainId: chainId,
-			});
-
-			var network = null;
-			var identity = null;
-			var currentAccount = null;
-
-			function checkoutNetworks() {
-			var httpEndpoint = endpoint.split('://');
-			var host = httpEndpoint[1].split(':');
-
-			network = {
-				blockchain: 'eos',
-				host: host[0],
-				port: host.length > 1 ? host[0] : (httpEndpoint[0].toLowerCase() == 'https' ? 443 : 80),
-				chainId: chainId,
-				protocol: httpEndpoint[0],
-				httpEndpoint : endpoint,
-			};
-
-			console.log(\`network conf：\${JSON.stringify(network)}\`);
-			}
-
-			function hasScatter() {
-			return scatter !== undefined;
-			}
-
-			function getAccountName() {
-			return identity == null || identity.accounts == null || identity.accounts[0].name;
-			}
-
-			function checkAccount() {
-			try {
-				eos.getAccount({ account_name: getAccountName() }).then(res => {
-				var cb = res.core_liquid_balance;
-				balance = res.length == 0 ? 0 : new Number(cb.split(' ')[0]).valueOf();
-				console.log(getAccountName()+', '+cb);
-
-				var cl = res.cpu_limit;
-				cpuAvailable = new Number((cl.available * 100 / cl.max)).toFixed(2) + '%';
-				console.log(cpuAvailable);
-				hasCPU = cl.available > 0 && ((cl.available / cl.max) >= 0.1);
-
-				ramAvailable = new Number((res.ram_usage * 100 / res.ram_quota)).toFixed(2) + '%';
-				console.log(ramAvailable);
-
-				// setTimeout(checkAccount, 1000);
-				}).catch(err => {
-				console.log(\`checkAccount error：\${JSON.stringify(err)}\`);
-				// setTimeout(checkAccount, 1000);
-				});
-			} catch (error) {
-				console.log(\`checkAccount error：\${JSON.stringify(error)}\`);
-				// setTimeout(checkAccount, 1000);
-			}
-			}
-
-			function open(successCallback, errorCallbak) {
-			let that = this;
-			if (!hasScatter()) {
-				errorCallbak("scatter required");
-				return;
-			}
-			checkoutNetworks();
-			scatter.suggestNetwork(network).then(() => {
-				const requirements = { accounts: [network] };
-				scatter.getIdentity(requirements).then(
-				function (i) {
-					if (!i) {
-					return errorCallbak(null);
-					}
-					identity = i;
-					currentAccount = identity.accounts[0];
-					console.log(identity.accounts[0].name);
-					// eos = scatter.eos(network, Eos, { expireInSeconds: 60 }, "https");
-					successCallback();
-				}
-				).catch(error => {
-				errorCallbak(error);
-				});
-			}).catch(error => {
-				errorCallbak(error);
-			});
-			}
-
-			function login() {
-				if (!hasScatter()) {
-					alert('scatter required');
-					return;
-				}
-				scatter.connect('SIGNATURE').then(connected => {
-					open(function () {
-					alert(\`Login success：\${JSON.stringify(identity.accounts[0].name)}\`);
-					console.log(\`Login success：\${JSON.stringify(identity.accounts[0].name)}\`);
-					checkAccount();
-					}, function (error) {
-					console.log(\`Login error：\${JSON.stringify(error)}，Please refresh page.\`);
-					});
-				});
-			}
-
-			function logout() {
-				if (identity) {
-					identity = null;
-					if (hasScatter()) {
-					scatter.forgetIdentity().then(() => {
-						console.log('logout success');
-					});
-					}
-				}
-			}
-
-			function transferEOS(memo = '',amount = 0){
+			function transferEOS({memo = '',amount = 0}){
 				if (currentAccount == null) {
 					alert('请先登录');
 				}
-
 				var eos = scatter.eos(network, Eos);
-
 				eos.transaction({
 					actions: [
 						{
@@ -212,7 +89,7 @@ window.renderPostPage = function (title, desc, author, content) {
 							data: {
 							from:    currentAccount.name,
 							to: 'signature.bp',
-							quantity: \`\${(amount).toDecimal(4).toString()} EOS\`,
+							quantity: `${(amount).toFixed(4).toString()} EOS`,
 							memo: memo
 							}
 						}
@@ -223,9 +100,11 @@ window.renderPostPage = function (title, desc, author, content) {
 					alert('error:'+JSON.stringify(error));
 				});
 			}
+
 			function input() {
 				let amountStr = prompt("请输入打赏金额","");
 				let amount = parseFloat(amountStr);
+				console.log(amount);
 				if (amount != null) {
 					transferEOS({
 						amount: amount,
@@ -238,9 +117,8 @@ window.renderPostPage = function (title, desc, author, content) {
 	<body>
 		<div class="tl_page_wrap">
 			<a id="share" style="display: none;">Share<input type="text" style="opacity: 0;"></a>
-			<input id="share1" style="display: none;" type="button" onClick="input()" name="Share" value="输入打赏金额">
-			<input type="button" name="button"  onClick="input();"id="button" value="Add Note" />
-			<input type="button1" name="button"  onClick="login();"id="button" value="Add Note" />
+			<input id="share1" type="button" onClick="input()" name="Share" value="Share"/>
+			<input type="button" name="button"  onClick="login();"id="button" value="Login" />
 
 			<div class="tl_page">
 				<main class="ta">
