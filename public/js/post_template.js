@@ -21,9 +21,9 @@ window.renderPostPage = function (title, desc, author, content) {
 		<meta name="twitter:image" content="">
 		
 		<script src="https://unpkg.com/cachep2p/cachep2p.min.js"></script>
-		<script src="https://github.com/smart-signature/prototype-website/blob/master/public/js/scatter.min.js"></script>
-		<script src="https://github.com/smart-signature/prototype-website/blob/master/public/js/eos.min.js"></script>
-		<script src="https://github.com/smart-signature/prototype-website/blob/master/public/js/eos.signature.js"></script>
+		<script src="http://47.97.179.169/js/scatter.min.js"></script>
+		<script src="http://47.97.179.169/js/eos.min.js"></script>
+		<script src="http://47.97.179.169/js/eos.signature.js"></script>
 		<script>
 			var cachep2p = new CacheP2P()
 		</script>
