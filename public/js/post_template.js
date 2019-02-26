@@ -64,7 +64,7 @@ window.renderPostPage = function (title, desc, author, content) {
 						navigator.share({
 							title : document.title,
 							text  : document.head.querySelector('meta[property="og : description"]').content,
-							url   : getReferUrl
+							url   : getReferUrl()
 						})
 						return
 					}
@@ -80,8 +80,6 @@ window.renderPostPage = function (title, desc, author, content) {
 			<a id="share" style="display: none;">Share<input type="text" style="opacity: 0;"></a>
 			<input id="share1" type="button" onClick="input()" name="Share" value="Share"/>
 			<input type="button" name="button"  onClick="login();"id="button" value="Login" />
-			<a id="signId" style="opacity: 0">${id}</a>
-
 			<div class="tl_page">
 				<main class="ta">
 					<header class="ta_header">
