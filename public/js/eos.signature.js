@@ -334,16 +334,15 @@ function url2signId() {
       dataType: 'json',
       type: 'get',
       contentType: 'application/json',
-      success: function (data, textStatus, jQxhr) {
-          var arr = [];
+      success: function (data) {
           for (var i = 0; i < data.length; i++) {
               var row = data[i];
               if (row.articleUrl === getPureUrl())
                 return row.signId + 1;
           }
       },
-      error: function (jqXhr, textStatus, errorThrown) {
-          console.log(errorThrown);
+      error: function (error) {
+          console.log(error);
       }
   });
 }
