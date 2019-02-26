@@ -233,26 +233,35 @@ function input() {
   let amountStr = prompt("请输入打赏金额","");
   let amount = parseFloat(amountStr);
   console.log(amount);
+  let signid = url2signId();
+  let shareid = getRefer();
   if (amount != null) {
     transferEOS({
       amount: amount,
-      memo: "1 1"
+      memo: `share ${signid} ${shareid}`
     })
   }
 }
 
-function getInviteCode () {
-  const inviteArr = window.location.hash.split('/invite/');
-  return inviteArr.length === 2 ? inviteArr[1] : '';
-}
 
-function getSharesInfo() {
-  const { rows } = eos.getTableRows({
+async function getSharesInfo() {
+  const { rows } = await eos.getTableRows({
     json: true,
     code: 'signature.bp',
     scope: 'signature.bp',
-    table: 'Shares',
-    limit: 256,
+    table: 'shares',
+    limit: 11256,
+  });
+  return rows;
+}
+
+async function getSignsInfo() {
+  const { rows } = await eos.getTableRows({
+    json: true,
+    code: 'signature.bp',
+    scope: 'signature.bp',
+    table: 'signs',
+    limit: 11256,
   });
   return rows;
 }
@@ -263,8 +272,7 @@ function getMaxShareId() {
   var maxId = 0;
 
   for (var i = 0; i < len; i++) {
-    for (obj in rows[i])
-    {
+    for (obj in rows[i]) {
       if (obj.id > maxId) {
         maxId = obj.id;
       }
@@ -272,4 +280,60 @@ function getMaxShareId() {
   }
 
   return maxId;
+}
+
+function getMaxSignId() {
+  var rows = getSignsInfo();
+  var len = rows.length;
+  var maxId = 0;
+
+  for (var i = 0; i < len; i++) {
+    for (obj in rows[i]) {
+      if (obj.id > maxId) {
+        maxId = obj.id;
+      }
+    }
+  }
+
+  return maxId;
+}
+
+// 分享链接时生成的链接
+function getReferUrl() {
+  const loc = window.location.href;
+  var url = loc.split('/');
+  var myShareId = getMaxShareId();
+  return `https://ipfs.io/ipfs/${url[4]}?#/invite/${myShareId + 1}`;
+}
+
+// 得到share id
+function getRefer() {
+  const pureloc = window.location.hash.split('/');
+  return pureloc[2];
+}
+
+function getPureUrl() {
+  const loc = window.location.href;
+  var url = loc.split('/');
+  return `https://ipfs.io/ipfs/${url[4]}`;
+}
+
+function url2signId() {
+  $.ajax({
+      url: 'http://smartsignature.azurewebsites.net/api/article',
+      dataType: 'json',
+      type: 'get',
+      contentType: 'application/json',
+      success: function (data, textStatus, jQxhr) {
+          var arr = [];
+          for (var i = 0; i < data.length; i++) {
+              var row = data[i];
+              if (row.articleUrl === getPureUrl())
+                return row.signId;
+          }
+      },
+      error: function (jqXhr, textStatus, errorThrown) {
+          console.log(errorThrown);
+      }
+  });
 }
