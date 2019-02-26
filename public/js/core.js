@@ -1350,7 +1350,7 @@ async function savePage() {
             if (!err && datahash) {
 
                 $.ajax({
-                    url: 'https://smartsignature.azurewebsites.net/api/article',
+                    url: 'http://smartsignature.azurewebsites.net/api/article',
                     dataType: 'json',
                     type: 'post',
                     contentType: 'application/json',
