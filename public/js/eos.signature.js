@@ -313,7 +313,7 @@ function getReferUrl() {
   const loc = window.location.href;
   var url = loc.split('/');
   var myShareId = getMaxShareId();
-  return `https://ipfs.io/ipfs/${url[4]}?#/invite/${myShareId + 1}`;
+  return `https://ipfs.io/ipfs/${url[4]}/?#/invite/${myShareId + 1}`;
 }
 
 // 得到share id
@@ -339,7 +339,7 @@ function url2signId() {
           for (var i = 0; i < data.length; i++) {
               var row = data[i];
               if (row.articleUrl === getPureUrl())
-                return row.signId;
+                return row.signId + 1;
           }
       },
       error: function (jqXhr, textStatus, errorThrown) {
