@@ -1325,7 +1325,6 @@ async function savePage() {
         quill.selection.scrollIntoView();
         return showError('Title is too small');
     }
-    await publish();
     await publish(function (transId, accountName) {
         $('body').addClass('publishing')
         $tl_article.addClass('tl_article_saving');
