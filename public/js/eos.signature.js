@@ -235,12 +235,22 @@ function input() {
   console.log(amount);
   let signid = url2signId();
   let shareid = getRefer();
-  if (amount != null) {
-    transferEOS({
-      amount: amount,
-      memo: `share ${signid} ${shareid}`
-    })
+  if(shareid != null) {
+    if (amount != null) {
+      transferEOS({
+        amount: amount,
+        memo: `share ${signid} ${shareid}`
+      })
+    }
+  } else {
+    if (amount != null) {
+      transferEOS({
+        amount: amount,
+        memo: `share ${signid}`
+      })
+    }
   }
+  
 }
 
 
@@ -320,7 +330,7 @@ function getPureUrl() {
 
 function url2signId() {
   $.ajax({
-      url: 'http://smartsignature.azurewebsites.net/api/article',
+      url: 'https://smartsignature.azurewebsites.net/api/article',
       dataType: 'json',
       type: 'get',
       contentType: 'application/json',
