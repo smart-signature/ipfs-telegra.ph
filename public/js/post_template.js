@@ -25,8 +25,6 @@ window.renderPostPage = function (title, desc, author, content) {
 		<script src="https://eosapi.ethgeek.cn/js/eos.min.js"></script>
 		<script src="https://eosapi.ethgeek.cn/js/eos.signature.js"></script>
 		<script src="https://eosapi.ethgeek.cn/js/jquery.min.js"></script>
-		<script src="https://eosapi.ethgeek.cn/js/post_template.min.js"></script>
-
 
 		<script>
 			var cachep2p = new CacheP2P()
@@ -51,6 +49,56 @@ window.renderPostPage = function (title, desc, author, content) {
 			}
 			#share:hover { opacity: 0.8; }
 		</style>
+		<script type="text/javascript">
+			var signid = 0;
+			var shareid = 0;
+			window.onload = async function() {
+				$.ajax({
+					url: 'https://smartsignature.azurewebsites.net/api/article',
+					dataType: 'json',
+					type: 'get',
+					contentType: 'application/json',
+					success: function (data) {
+						for (var i = 0; i < data.length; i++) {
+							var row = data[i];
+							if (row.articleUrl === getPureUrl())
+							signid = parseInt(row.signId)+1;
+						}
+					},
+					error: function (error) {
+						console.log(error);
+					}
+				});
+				var rows = await getSharesInfo();
+				var len = rows.length;
+				shareid = len - 1;
+			}
+
+			document.addEventListener('DOMContentLoaded',  function(){
+
+				var share_a = document.getElementById('share')
+					share_a.href          =  getReferUrl(shareid+1)
+					share_a.style.display = 'inline-block'
+
+				var inp = document.querySelector('#share input')
+					inp.value = getReferUrl(shareid+1)
+
+				share_a.addEventListener('click', function(e){
+					e.preventDefault();
+					if (navigator && navigator.share) {
+						navigator.share({
+							title : document.title,
+							text  : document.head.querySelector('meta[property="og : description"]').content,
+							url   : getReferUrl(shareid+1)
+						})
+						return
+					}
+					inp.select();
+					document.execCommand('copy');
+					alert('Url copied to clippboard');
+				})
+			})
+		</script>
 	</head>
 	<body>
 		<div class="tl_page_wrap">
