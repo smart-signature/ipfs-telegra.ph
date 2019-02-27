@@ -299,10 +299,9 @@ async function getMaxSignId() {
 }
 
 // 分享链接时生成的链接
-async function getReferUrl() {
+ function getReferUrl(myShareId) {
   const loc = window.location.href;
   var url = loc.split('/');
-  var myShareId = await getMaxShareId();
   return `https://ipfs.io/ipfs/${url[4]}/?#/invite/${myShareId}`;
 }
 

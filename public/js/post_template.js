@@ -51,6 +51,7 @@ window.renderPostPage = function (title, desc, author, content) {
 		</style>
 		<script type="text/javascript">
 			var signid = 0;
+			var shareid = 0;
 			window.onload = function() {
 				$.ajax({
 					url: 'https://smartsignature.azurewebsites.net/api/article',
@@ -61,7 +62,7 @@ window.renderPostPage = function (title, desc, author, content) {
 						for (var i = 0; i < data.length; i++) {
 							var row = data[i];
 							if (row.articleUrl === getPureUrl())
-							signid = row.signId+1;
+							signid = \`parseInt(row.signId)+1\`;
 						}
 					},
 					error: function (error) {
@@ -70,7 +71,7 @@ window.renderPostPage = function (title, desc, author, content) {
 				});
 			}
 
-			document.addEventListener('DOMContentLoaded', function(){
+			document.addEventListener('DOMContentLoaded', async function(){
 
 				var share_a = document.getElementById('share')
 					share_a.href          = getReferUrl()
