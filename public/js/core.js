@@ -1356,7 +1356,7 @@ async function savePage() {
                     contentType: 'application/json',
                     data: JSON.stringify({
                         "account": accountName,
-                        "articleUrl": 'https://ipfs.io/ipfs' + '/' + datahash + '/',
+                        "articleUrl": window.ipfs_gateway + '/' + datahash + '/',
                         "title": title,
                         "author": author,
                         "transactionId": transId
