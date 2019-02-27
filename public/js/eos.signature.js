@@ -313,7 +313,7 @@ function getReferUrl() {
   const loc = window.location.href;
   var url = loc.split('/');
   var myShareId = getMaxShareId();
-  return `https://ipfs.io/ipfs/${url[4]}/?#/invite/${myShareId + 1}`;
+  return `https://ipfs.io/ipfs/${url[4]}/?#/invite/${myShareId}`;
 }
 
 // 得到share id

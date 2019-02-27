@@ -52,11 +52,11 @@ window.renderPostPage = function (title, desc, author, content) {
 		<script type="text/javascript">
 			document.addEventListener('DOMContentLoaded', function(){
 				var share_a = document.getElementById('share')
-					share_a.href          = location.href
+					share_a.href          = getReferUrl()
 					share_a.style.display = 'inline-block'
 
 				var inp = document.querySelector('#share input')
-					inp.value = location.href
+					inp.value = getReferUrl()
 
 				share_a.addEventListener('click', function(e){
 					e.preventDefault();
