@@ -259,7 +259,7 @@ async function getSharesInfo() {
     code: 'signature.bp',
     scope: 'signature.bp',
     table: 'shares',
-    limit: 11256,
+    limit: 10000,
   });
   return rows;
 }
@@ -270,29 +270,20 @@ async function getSignsInfo() {
     code: 'signature.bp',
     scope: 'signature.bp',
     table: 'signs',
-    limit: 11256,
+    limit: 10000,
   });
   return rows;
 }
 
-function getMaxShareId() {
-  var rows = getSharesInfo();
+async function getMaxShareId() {
+  var rows = await getSharesInfo();
   var len = rows.length;
-  var maxId = 0;
 
-  for (var i = 0; i < len; i++) {
-    for (obj in rows[i]) {
-      if (obj.id > maxId) {
-        maxId = obj.id;
-      }
-    }
-  }
-
-  return maxId;
+  return len - 1;
 }
 
-function getMaxSignId() {
-  var rows = getSignsInfo();
+async function getMaxSignId() {
+  var rows = await getSignsInfo();
   var len = rows.length;
   var maxId = 0;
 
@@ -308,10 +299,10 @@ function getMaxSignId() {
 }
 
 // 分享链接时生成的链接
-function getReferUrl() {
+async function getReferUrl() {
   const loc = window.location.href;
   var url = loc.split('/');
-  var myShareId = getMaxShareId();
+  var myShareId = await getMaxShareId();
   return `https://ipfs.io/ipfs/${url[4]}/?#/invite/${myShareId}`;
 }
 
