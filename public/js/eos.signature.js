@@ -1,57 +1,3 @@
-/*
-function login(){
-    var network = {blockchain:'eos', protocol:'https', host:'api.eosbeijing.one', port:443, chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'};
-  
-    var eos = scatter.eos(network, Eos);
-    console.log('id before', scatter.identity)
-    scatter.forgetIdentity().then(function(){
-        scatter.getIdentity({accounts:[network]}).then(function(id){
-            const account = id.accounts.find(function(x){ return x.blockchain === 'eos' });
-            console.log('acc', account);
-  
-            eos.transaction({
-              actions: [
-                  {
-                      account: 'signature.bp',
-                      name:    'create',
-                      authorization: [{
-                          actor:      account.name,
-                          permission: account.authority
-                      }],
-                      data: {
-                          from:    account.name
-                      }
-                  }
-              ]
-          }).then(result => {
-            alert('success!');
-          }).catch(error => {
-            alert('error:'+JSON.stringify(error));
-          });
-        
-            /*
-            eos.contract("signature.bp").then(contr => {
-              contr.create(account.name, 2, {
-                authorization: [{ actor:account.name, permission:account.authority}]
-              }).then(result => {
-                  console.log(result);
-              });
-            });
-            
-            /*
-            eos.transfer(account.name, 'signatu', '0.0001 EOS', '').then(function(res){
-                console.log('res', res);
-            }).catch(function(err){
-                console.log('err', err);
-            })
-            
-        })
-    })
-  }
-  */
-
-
-// mainnet
 var chainId = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906';
 var endpoint = 'https://mainnet.eoscannon.io';
 
@@ -64,6 +10,52 @@ var eos = Eos({
 var network = null;
 var identity = null;
 var currentAccount = null;
+
+var signid = 0;
+var shareid = 0;
+window.onload = function() {
+  $.ajax({
+    url: 'https://smartsignature.azurewebsites.net/api/article',
+    dataType: 'json',
+    type: 'get',
+    contentType: 'application/json',
+    success: function (data) {
+      for (var i = 0; i < data.length; i++) {
+        var row = data[i];
+        if (row.articleUrl === getPureUrl())
+        signid = parseInt(row.signId)+1;
+      }
+    },
+    error: function (error) {
+      console.log(error);
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', async function(){
+
+  var share_a = document.getElementById('share')
+    share_a.href          = getReferUrl()
+    share_a.style.display = 'inline-block'
+
+  var inp = document.querySelector('#share input')
+    inp.value = getReferUrl()
+
+  share_a.addEventListener('click', function(e){
+    e.preventDefault();
+    if (navigator && navigator.share) {
+      navigator.share({
+        title : document.title,
+        text  : document.head.querySelector('meta[property="og : description"]').content,
+        url   : getReferUrl()
+      })
+      return
+    }
+    inp.select();
+    document.execCommand('copy');
+    alert('Url copied to clippboard');
+  })
+})
 
 function checkoutNetworks() {
   var httpEndpoint = endpoint.split('://');
