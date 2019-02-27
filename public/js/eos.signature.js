@@ -13,7 +13,7 @@ var currentAccount = null;
 
 var signid = 0;
 var newshareid = 0;
-window.onload = function() {
+window.onload = async function() {
   $.ajax({
     url: 'https://smartsignature.azurewebsites.net/api/article',
     dataType: 'json',
