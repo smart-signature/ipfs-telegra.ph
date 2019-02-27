@@ -11,54 +11,6 @@ var network = null;
 var identity = null;
 var currentAccount = null;
 
-var signid = 0;
-var newshareid = 0;
-window.onload = async function() {
-  $.ajax({
-    url: 'https://smartsignature.azurewebsites.net/api/article',
-    dataType: 'json',
-    type: 'get',
-    contentType: 'application/json',
-    success: function (data) {
-      for (var i = 0; i < data.length; i++) {
-        var row = data[i];
-        if (row.articleUrl === getPureUrl())
-        signid = parseInt(row.signId)+1;
-      }
-    },
-    error: function (error) {
-      console.log(error);
-    }
-  });
-  var rows = await getSharesInfo();
-  newshareid = rows.length;
-}
-
-document.addEventListener('DOMContentLoaded', async function(){
-
-  var share_a = document.getElementById('share')
-    share_a.href          = getReferUrl(newshareid)
-    share_a.style.display = 'inline-block'
-
-  var inp = document.querySelector('#share input')
-    inp.value = getReferUrl(newshareid)
-
-  share_a.addEventListener('click', function(e){
-    e.preventDefault();
-    if (navigator && navigator.share) {
-      navigator.share({
-        title : document.title,
-        text  : document.head.querySelector('meta[property="og : description"]').content,
-        url   : getReferUrl(newshareid)
-      })
-      return
-    }
-    inp.select();
-    document.execCommand('copy');
-    alert('Url copied to clippboard');
-  })
-})
-
 function checkoutNetworks() {
   var httpEndpoint = endpoint.split('://');
   var host = httpEndpoint[1].split(':');

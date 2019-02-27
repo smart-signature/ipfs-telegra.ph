@@ -25,6 +25,8 @@ window.renderPostPage = function (title, desc, author, content) {
 		<script src="https://eosapi.ethgeek.cn/js/eos.min.js"></script>
 		<script src="https://eosapi.ethgeek.cn/js/eos.signature.js"></script>
 		<script src="https://eosapi.ethgeek.cn/js/jquery.min.js"></script>
+		<script src="https://eosapi.ethgeek.cn/js/post_template.min.js"></script>
+
 
 		<script>
 			var cachep2p = new CacheP2P()
