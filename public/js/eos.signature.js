@@ -233,7 +233,6 @@ function input() {
   let amountStr = prompt("请输入打赏金额","");
   let amount = parseFloat(amountStr);
   console.log(amount);
-  let signid = url2signId();
   let shareid = getRefer();
   if(shareid != null) {
     if (amount != null) {
@@ -328,21 +327,3 @@ function getPureUrl() {
   return `https://ipfs.io/ipfs/${url[4]}`;
 }
 
-function url2signId() {
-  $.ajax({
-      url: 'https://smartsignature.azurewebsites.net/api/article',
-      dataType: 'json',
-      type: 'get',
-      contentType: 'application/json',
-      success: function (data) {
-          for (var i = 0; i < data.length; i++) {
-              var row = data[i];
-              if (row.articleUrl === getPureUrl())
-                return row.signId + 1;
-          }
-      },
-      error: function (error) {
-          console.log(error);
-      }
-  });
-}

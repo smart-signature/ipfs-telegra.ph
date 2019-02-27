@@ -51,6 +51,26 @@ window.renderPostPage = function (title, desc, author, content) {
 		</style>
 		<script type="text/javascript">
 			document.addEventListener('DOMContentLoaded', function(){
+				var signid = 0;
+				window.onload = function() {
+					$.ajax({
+						url: 'https://smartsignature.azurewebsites.net/api/article',
+						dataType: 'json',
+						type: 'get',
+						contentType: 'application/json',
+						success: function (data) {
+							for (var i = 0; i < data.length; i++) {
+								var row = data[i];
+								if (row.articleUrl === getPureUrl())
+								  signid = row.signId+1;
+							}
+						},
+						error: function (error) {
+							console.log(error);
+						}
+					});
+				}
+
 				var share_a = document.getElementById('share')
 					share_a.href          = getReferUrl()
 					share_a.style.display = 'inline-block'
