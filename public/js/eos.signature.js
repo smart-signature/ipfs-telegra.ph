@@ -12,7 +12,7 @@ var identity = null;
 var currentAccount = null;
 
 var signid = 0;
-var shareid = 0;
+var newshareid = 0;
 window.onload = function() {
   $.ajax({
     url: 'https://smartsignature.azurewebsites.net/api/article',
@@ -30,16 +30,18 @@ window.onload = function() {
       console.log(error);
     }
   });
+  var rows = await getSharesInfo();
+  newshareid = rows.length;
 }
 
 document.addEventListener('DOMContentLoaded', async function(){
 
   var share_a = document.getElementById('share')
-    share_a.href          = getReferUrl()
+    share_a.href          = getReferUrl(newshareid)
     share_a.style.display = 'inline-block'
 
   var inp = document.querySelector('#share input')
-    inp.value = getReferUrl()
+    inp.value = getReferUrl(newshareid)
 
   share_a.addEventListener('click', function(e){
     e.preventDefault();
@@ -47,7 +49,7 @@ document.addEventListener('DOMContentLoaded', async function(){
       navigator.share({
         title : document.title,
         text  : document.head.querySelector('meta[property="og : description"]').content,
-        url   : getReferUrl()
+        url   : getReferUrl(newshareid)
       })
       return
     }
