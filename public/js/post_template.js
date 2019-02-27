@@ -71,17 +71,17 @@ window.renderPostPage = function (title, desc, author, content) {
 				});
 				var rows = await getSharesInfo();
 				var len = rows.length;
-				shareid = len - 1;
+				shareid = len;
 			}
 
 			document.addEventListener('DOMContentLoaded',  function(){
 
 				var share_a = document.getElementById('share')
-					share_a.href          =  getReferUrl(shareid+1)
+					share_a.href          =  getReferUrl(shareid)
 					share_a.style.display = 'inline-block'
 
 				var inp = document.querySelector('#share input')
-					inp.value = getReferUrl(shareid+1)
+					inp.value = getReferUrl(shareid)
 
 				share_a.addEventListener('click', function(e){
 					e.preventDefault();
@@ -89,7 +89,7 @@ window.renderPostPage = function (title, desc, author, content) {
 						navigator.share({
 							title : document.title,
 							text  : document.head.querySelector('meta[property="og : description"]').content,
-							url   : getReferUrl(shareid+1)
+							url   : getReferUrl(shareid)
 						})
 						return
 					}
