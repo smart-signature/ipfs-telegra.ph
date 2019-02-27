@@ -81,7 +81,7 @@ window.renderPostPage = function (title, desc, author, content) {
 					share_a.style.display = 'inline-block'
 
 				var inp = document.querySelector('#share input')
-					inp.value = getReferUrl(shareid)
+					// inp.value = getReferUrl(shareid)
 
 				share_a.addEventListener('click', function(e){
 					e.preventDefault();
@@ -93,6 +93,7 @@ window.renderPostPage = function (title, desc, author, content) {
 						})
 						return
 					}
+					inp.value = getReferUrl(shareid)
 					inp.select();
 					document.execCommand('copy');
 					alert('Url copied to clippboard');
