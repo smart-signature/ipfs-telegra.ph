@@ -315,6 +315,6 @@ function getRefer() {
 function getPureUrl() {
   const loc = window.location.href;
   var url = loc.split('/');
-  return `https://ipfs.io/ipfs/${url[4]}`;
+  return `https://ipfs.io/ipfs/${url[4]}/`;
 }
 
