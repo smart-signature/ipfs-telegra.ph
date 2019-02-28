@@ -188,7 +188,7 @@ function input() {
     })
   } else {
     for(var i = sharerows.length - 1; i >= 0; i--) {
-      if(sharerows[i].reader === currentAccount.name) {
+      if(sharerows[i].reader === getRefer()) {
         shareid = sharerows[i].id;
         break;
       }
