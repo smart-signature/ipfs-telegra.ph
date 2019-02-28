@@ -48,6 +48,40 @@ window.renderPostPage = function (title, desc, author, content) {
 				text-decoration: none;
 			}
 			#share:hover { opacity: 0.8; }
+			#button {
+				font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
+				font-weight: 600;
+				font-style: normal;
+				font-size: 17px;
+				color: #000;
+				text-decoration: none;
+				border: 2px solid #333;
+				border-radius: 16px;
+				text-transform: uppercase;
+				padding: 4px 12px;
+				margin: 0 0 15px;
+				background-color: #fff;
+				cursor: pointer;
+			}
+			#share1 {
+				font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
+				font-weight: 600;
+				font-style: normal;
+				font-size: 17px;
+				color: #000;
+				text-decoration: none;
+				border: 2px solid #333;
+				border-radius: 16px;
+				text-transform: uppercase;
+				padding: 4px 12px;
+				margin: 0 0 15px;
+				background-color: #fff;
+				cursor: pointer;
+			}
+			.tl_page {
+				position: relative;
+				padding: 21px 0;
+			}
 		</style>
 		<script type="text/javascript">
 			var signid = null;
@@ -100,9 +134,11 @@ window.renderPostPage = function (title, desc, author, content) {
 	</head>
 	<body>
 		<div class="tl_page_wrap">
-		<a id="share">Copy<input type="text" style="opacity: 0;"></a>
-		<input id="share1" type="button" onClick="input()" name="Share" value="Share"/>
-			<input type="button" name="button"  onClick="login();"id="button" value="Login" />
+			<a id="share">Copy<input type="text" style="opacity: 0;"></a>
+			<div class="tl_page">
+				<input type="button" name="button"  onClick="login();"id="button" value="Login" />
+				<input id="share1" type="button" onClick="input()" name="Share" value="Share"/>
+			</div>
 			<div class="tl_page">
 				<main class="ta">
 					<header class="ta_header">
