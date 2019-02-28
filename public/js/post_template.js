@@ -50,8 +50,8 @@ window.renderPostPage = function (title, desc, author, content) {
 			#share:hover { opacity: 0.8; }
 		</style>
 		<script type="text/javascript">
-			var signid = 0;
-			var shareid = 0;
+			var signid = null;
+			var sharerows = null;
 			window.onload = async function() {
 				$.ajax({
 					url: 'https://smartsignature.azurewebsites.net/api/article',
@@ -69,19 +69,17 @@ window.renderPostPage = function (title, desc, author, content) {
 						console.log(error);
 					}
 				});
-				var rows = await getSharesInfo();
-				var len = rows.length;
-				shareid = len;
+				sharerows = await getSharesInfo();
 			}
 
 			document.addEventListener('DOMContentLoaded',  function(){
 
 				var share_a = document.getElementById('share')
-					share_a.href          =  getReferUrl(shareid)
+					share_a.href          =  getReferUrl()
 					share_a.style.display = 'inline-block'
 
 				var inp = document.querySelector('#share input')
-					// inp.value = getReferUrl(shareid)
+					//inp.value = getReferUrl()
 
 				share_a.addEventListener('click', function(e){
 					e.preventDefault();
@@ -89,11 +87,11 @@ window.renderPostPage = function (title, desc, author, content) {
 						navigator.share({
 							title : document.title,
 							text  : document.head.querySelector('meta[property="og : description"]').content,
-							url   : getReferUrl(shareid)
+							url   : getReferUrl()
 						})
 						return
 					}
-					inp.value = getReferUrl(shareid)
+					inp.value = getReferUrl()
 					inp.select();
 					document.execCommand('copy');
 					alert('Url copied to clippboard');

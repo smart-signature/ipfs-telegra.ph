@@ -259,7 +259,7 @@ async function getMaxSignId() {
 }
 
 // 分享链接时生成的链接
- function getReferUrl(myShareId) {
+ function getReferUrl() {
   if (currentAccount == null) {
     alert('请先登录');
   } 
