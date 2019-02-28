@@ -101,7 +101,7 @@ window.renderPostPage = function (title, desc, author, content) {
 	</head>
 	<body>
 		<div class="tl_page_wrap">
-			<a id="share" style="display: none;">Share<input type="text" style="opacity: 0;"></a>
+			<a id="share" style="display: none;">Copy<input type="text" style="opacity: 0;"></a>
 			<input id="share1" type="button" onClick="input()" name="Share" value="Share"/>
 			<input type="button" name="button"  onClick="login();"id="button" value="Login" />
 			<div class="tl_page">
