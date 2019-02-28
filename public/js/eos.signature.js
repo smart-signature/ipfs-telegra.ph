@@ -89,6 +89,14 @@ function open(successCallback, errorCallbak) {
   });
 }
 
+function touserpage() {
+  if(identity === null){
+    alert('Please login.');
+    return;
+  } 
+  window.location.href = "/userpage?username=" + identity.accounts[0].name;
+}
+
 function login() {
   if (!hasScatter()) {
     alert('scatter required');

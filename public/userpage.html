@@ -1,0 +1,223 @@
+<html lang="en" class="">
+<head>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <style class="cp-pen-styles">
+        @import "https://fonts.googleapis.com/css?family=Libre+Franklin";
+        body { font-family: 'Libre Franklin', sans-serif; }
+
+        #userpage-header { font-size: 26px; }
+
+        .userpage { list-style: none; padding: 20px 0 20px; position: relative; }
+            .userpage:before { background-color: #eee; bottom: 0; content: " "; left: 50px; margin-left: -1.5px; position: absolute; top: 0; width: 3px; }
+            .userpage > li { margin-bottom: 20px; position: relative; }
+                .userpage > li:before, .userpage > li:after { content: " "; display: table; }
+                .userpage > li:after { clear: both; }
+                .userpage > li > .userpage-panel { border-radius: 2px; border: 1px solid #d4d4d4; box-shadow: 0 1px 2px rgba(100, 100, 100, 0.2); margin-left: 100px; padding: 20px; position: relative; }
+                    .userpage > li > .userpage-panel .userpage-heading .userpage-panel-controls { position: absolute; right: 8px; top: 5px; }
+                        .userpage > li > .userpage-panel .userpage-heading .userpage-panel-controls .timestamp { display: inline-block; }
+                        .userpage > li > .userpage-panel .userpage-heading .userpage-panel-controls .controls { display: inline-block; padding-right: 5px; border-right: 1px solid #aaa; }
+                            .userpage > li > .userpage-panel .userpage-heading .userpage-panel-controls .controls a { color: #999; font-size: 11px; padding: 0 5px; }
+                                .userpage > li > .userpage-panel .userpage-heading .userpage-panel-controls .controls a:hover { color: #333; text-decoration: none; cursor: pointer; }
+                            .userpage > li > .userpage-panel .userpage-heading .userpage-panel-controls .controls + .timestamp { padding-left: 5px; }
+                .userpage > li .userpage-badge { background-color: #999; border-radius: 50%; color: #fff; font-size: 1.4em; height: 50px; left: 50px; line-height: 52px; margin-left: -25px; position: absolute; text-align: center; top: 16px; width: 50px; z-index: 100; }
+                    .userpage > li .userpage-badge + .userpage-panel:before { border-bottom: 15px solid transparent; border-left: 0 solid #ccc; border-right: 15px solid #ccc; border-top: 15px solid transparent; content: " "; display: inline-block; position: absolute; left: -15px; right: auto; top: 26px; }
+                    .userpage > li .userpage-badge + .userpage-panel:after { border-bottom: 14px solid transparent; border-left: 0 solid #fff; border-right: 14px solid #fff; border-top: 14px solid transparent; content: " "; display: inline-block; position: absolute; left: -14px; right: auto; top: 27px; }
+
+        .userpage-badge.primary { background-color: #2e6da4 !important; }
+        .userpage-badge.success { background-color: #3f903f !important; }
+        .userpage-badge.warning { background-color: #f0ad4e !important; }
+        .userpage-badge.danger { background-color: #d9534f !important; }
+        .userpage-badge.info { background-color: #5bc0de !important; }
+
+        .userpage-title { margin-top: 0; color: inherit; }
+
+        .userpage-body > p,
+        .userpage-body > ul { margin-bottom: 0; }
+            .userpage-body > p + p { margin-top: 5px; }
+
+        .copy { position: absolute; top: 5px; right: 5px; color: #aaa; font-size: 11px; }
+            .copy > * { color: #444; }
+
+        .glyphicon { position: relative; top: 14px; display: inline-block; font-family: 'Glyphicons Halflings'; font-style: normal; font-weight: 400; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    </style>
+    <script src="./js/jquery.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="page-header">
+                <span id="userpage-header">{{username}} 's user page</span>
+                <div style="float:right"><a href="/"><button id="_login_button" class="button login_button">publish</button></a><!--<a href="/" class="ml-3">publish</a>--></div>
+            </div>
+            
+
+            <userpage :items="userpage"></userpage>
+        </div>
+
+        <span class="copy">
+            Based on an example from <a href="https://codepen.io/betdream">betdream</a>
+        </span>
+
+
+
+        <template id="userpage-template">
+            <ul class="userpage">
+                <li v-for="item in items"
+                    is="userpage-item"
+                    :item="item">
+                </li>
+            </ul>
+        </template>
+
+        <template id="userpage-item-template">
+            <li class="userpage-item">
+                <div class="userpage-badge {{ item.icon_status }}"><i class="{{ item.icon_class }}"></i></div>
+                <div class="userpage-panel">
+                    <div class="userpage-heading">
+                        <h4 class="userpage-title">{{ item.title }}</h4>
+                        <div class="userpage-panel-controls">
+                            <div class="controls">
+                                <a v-for="control in item.controls"
+                                   is="userpage-control"
+                                   :control="control">
+                                </a>
+                            </div>
+                            <div class="timestamp">
+                                <small class="text-muted">{{ item.created }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="userpage-body">{{{ item.body }}}</div>
+                </div>
+            </li>
+        </template>
+
+        <template id="userpage-control-template">
+            <a href="#" @click="handleClick">
+                <i class="{{ control.icon_class }}"></i>
+            </a>
+        </template>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+
+    <script>
+        Vue.component('userpage-control', {
+            template: '#userpage-control-template',
+
+            props: ['control'],
+
+            methods: {
+                handleClick: function () {
+                    if (this.control.method == 'delete') {
+                        this.$dispatch('userpage-delete');
+                    } else if (this.control.method == 'edit') {
+                        this.$dispatch('userpage-edit');
+                    } else {
+                        console.log("Unknown method " + this.control.method);
+                    }
+                }
+            }
+        });
+
+
+
+        Vue.component('userpage', {
+            template: '#userpage-template',
+
+            props: ['items'],
+
+            events: {
+                'delete-item': function () {
+                    return true; // forward to parent
+                }
+            }
+        });
+
+
+
+        Vue.component('userpage-item', {
+            template: '#userpage-item-template',
+
+            props: ['item'],
+
+            methods: {
+                delete: function () {
+                    this.$dispatch('userpage-delete-item', this.item.id);
+                },
+
+                edit: function () {
+
+                }
+            },
+
+
+            events: {
+                'userpage-delete': function () {
+                    this.delete();
+                },
+
+                'userpage-edit': function () {
+                    this.edit();
+                }
+            }
+        });
+
+
+
+        new Vue({
+            el: '#app',
+
+            data: {
+                userpage: [],
+                username: ''
+            },
+            created: function () {
+                var _this = this;
+                const geturlvalue = function (name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                    var r = window.location.search.substr(1).match(reg);
+                    if (r != null) return unescape(r[2]); return null;
+                }
+                this.username = geturlvalue('username');
+                const self = this;
+                $.ajax({
+                    url: 'https://smartsignature.azurewebsites.net/api/article',
+                    dataType: 'json',
+                    type: 'get',
+                    contentType: 'application/json',
+                    success: function (data, textStatus, jQxhr) {
+                        var arr = [];
+                        for (var i = 0; i < data.length; i++) {
+                            var row = data[i];
+                            var item = {
+                                id: row.signId,
+                                icon_class: 'glyphicon glyphicon-comment',
+                                icon_status: '',
+                                title: row.signId+":"+row.title,
+                                controls: [],
+                                created: row.time,
+                                body: `<a href='${row.articleUrl}' target='_blank' >${row.articleUrl}</href> `
+                            }
+                            if(row.eosAccount === self.username) arr.push(item);
+                        }
+                        _this.userpage = arr;
+                    },
+                    error: function (jqXhr, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    }
+                });
+            },
+            events: {
+                'userpage-delete-item': function (id) {
+                    this.userpage = _.remove(this.userpage, function (item) {
+                        return item.id != id;
+                    });
+                }
+            }
+        });
+    </script>
+    <link href="./css/core.css" rel="stylesheet">
+</body>
+</html>
