@@ -50,7 +50,7 @@
 		</style>
 		<script type="text/javascript">
 			var signid = 0;
-			var shareid = 0;
+			var sharerows;
 			window.onload = async function() {
 				$.ajax({
 					url: 'https://smartsignature.azurewebsites.net/api/article',
@@ -68,9 +68,7 @@
 						console.log(error);
 					}
 				});
-				var rows = await getSharesInfo();
-  				var len = rows.length;
-				shareid = len;
+				var sharerows = await getSharesInfo();
 			}
 
 			document.addEventListener('DOMContentLoaded',  function(){

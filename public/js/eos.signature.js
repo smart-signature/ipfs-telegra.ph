@@ -179,23 +179,37 @@ function input() {
   let amountStr = prompt("请输入打赏金额","");
   let amount = parseFloat(amountStr);
   console.log(amount);
-  let shareid = getRefer();
-  if(shareid != null) {
-    if (amount != null) {
-      transferEOS({
-        amount: amount,
-        memo: `share ${signid} ${shareid}`
-      })
-    }
+  let shareaccount = getRefer();
+  let shareid = null;
+  if (shareaccount == null) {
+    transferEOS({
+      amount: amount,
+      memo: `share ${signid}`
+    })
   } else {
-    if (amount != null) {
-      transferEOS({
-        amount: amount,
-        memo: `share ${signid}`
-      })
+    for(var i = sharerows.length - 1; i >= 0; i--) {
+      if(sharerows[i].reader === currentAccount.name) {
+        shareid = sharerows[i].id;
+        break;
+      }
     }
-  }
-  
+
+    if(shareid != null) {
+      if (amount != null) {
+        transferEOS({
+          amount: amount,
+          memo: `share ${signid} ${shareid}`
+        })
+      }
+    } else {
+      if (amount != null) {
+        transferEOS({
+          amount: amount,
+          memo: `share ${signid}`
+        })
+      }
+    }
+  }  
 }
 
 
@@ -246,12 +260,15 @@ async function getMaxSignId() {
 
 // 分享链接时生成的链接
  function getReferUrl(myShareId) {
+  if (currentAccount == null) {
+    alert('请先登录');
+  } 
   const loc = window.location.href;
   var url = loc.split('/');
-  return `https://ipfs.io/ipfs/${url[4]}/?#/invite/${myShareId}`;
+  return `https://ipfs.io/ipfs/${url[4]}/?#/invite/${currentAccount.name}`;
 }
 
-// 得到share id
+// 得到share account
 function getRefer() {
   const pureloc = window.location.hash.split('/');
   return pureloc[2];
