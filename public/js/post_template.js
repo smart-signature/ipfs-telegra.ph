@@ -75,7 +75,6 @@ window.renderPostPage = function (title, desc, author, content) {
 			document.addEventListener('DOMContentLoaded',  function(){
 
 				var share_a = document.getElementById('share')
-					share_a.href          =  getReferUrl()
 					share_a.style.display = 'inline-block'
 
 				var inp = document.querySelector('#share input')
@@ -101,8 +100,8 @@ window.renderPostPage = function (title, desc, author, content) {
 	</head>
 	<body>
 		<div class="tl_page_wrap">
-			<a id="share" style="display: none;">Copy<input type="text" style="opacity: 0;"></a>
-			<input id="share1" type="button" onClick="input()" name="Share" value="Share"/>
+		<a id="share">Copy<input type="text" style="opacity: 0;"></a>
+		<input id="share1" type="button" onClick="input()" name="Share" value="Share"/>
 			<input type="button" name="button"  onClick="login();"id="button" value="Login" />
 			<div class="tl_page">
 				<main class="ta">
