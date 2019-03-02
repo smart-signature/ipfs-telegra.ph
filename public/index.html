@@ -46,51 +46,7 @@
         var cachep2p = new CacheP2P()
     </script>
 
-    <style>
-      .tl_page_wrap {
-        transition: opacity 0.3s linear;
-        opacity:1;
-      }
-    
-      body::before {
-        display:none;
-        width: 100%;
-        color: #333; text-align: center;
-        font-size: 28px;
-        text-transform: uppercase;
-        font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
-
-        margin-top: 20%;
-        position: fixed;
-
-        animation: pulsate 1s ease-out;
-        animation-iteration-count: infinite; 
-        -webkit-animation: pulsate 1s ease-out;
-        -webkit-animation-iteration-count: infinite; 
-      } 
-
-      @-webkit-keyframes pulsate {
-        0% {opacity: 0.1;}
-        50% {opacity: 1.0;}
-        100% {opacity: 0.1;}
-      }
-      @keyframes pulsate {
-        0% {opacity: 0.1;}
-        50% {opacity: 1.0;}
-        100% {opacity: 0.1;}
-      }
-
-      body.loading .tl_page_wrap, body.publishing .tl_page_wrap {
-        opacity:0;
-      }
-      body.loading::before {
-        content: 'Loading...';  display:block;
-      }
-      body.publishing::before {
-        content: 'Publishing...';  display:block;
-      }
-
-    </style>
+    <link href="./css/tlpage.css" rel="stylesheet">
 
   </head>
   <body class="loading">
@@ -99,6 +55,7 @@
         <button id="_login_button" class="button login_button" onclick="login()">Login</button>
         <a href="/timeline.html"><button id="_login_button" class="button login_button">timeline</button></a>
         <button id="_login_button" class="button login_button" onclick="touserpage()">userpage</button>
+
         <main class="tl_article">
           <header class="tl_article_header">
             <h1 dir="auto"></h1>
@@ -155,7 +112,7 @@
                 return text;
               }
           </script>
-                    
+
           <br/>
 
           <link href="css/mavon.css" rel="stylesheet">
