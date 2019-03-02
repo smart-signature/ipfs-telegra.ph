@@ -150,8 +150,32 @@
           <script type="text/javascript">
               var editor = new window.wangEditor('#richEditor')
               editor.create()
+              function gettext(){
+                var text = editor.txt.html();
+                return text;
+              }
           </script>          
 
+          <!-- <link href="css/mavon.css" rel="stylesheet">
+          <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+          <script src="js/mavon-editor.js"></script>
+          <div id="main">
+          </div>
+          <script>
+              Vue.use(window['mavon-editor'])
+              new Vue({
+                  'el': '#main',
+                  data:{
+                      value: "帅东"
+                  },
+                  template:'<mavon-editor v-model="value" ref=md @imgAdd="$imgAdd"></mavon-editor>',
+                  methods: {
+                      $imgAdd: function (pos, file) {
+                      //在这里上传图片
+                      }
+                  }
+              })
+          </script> -->
         </main>
       </div>
     </div>
