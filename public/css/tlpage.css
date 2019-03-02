@@ -1,0 +1,42 @@
+.tl_page_wrap {
+        transition: opacity 0.3s linear;
+        opacity:1;
+      }
+    
+      body::before {
+        display:none;
+        width: 100%;
+        color: #333; text-align: center;
+        font-size: 28px;
+        text-transform: uppercase;
+        font-family: CustomSansSerif, 'Lucida Grande', Arial, sans-serif;
+
+        margin-top: 20%;
+        position: fixed;
+
+        animation: pulsate 1s ease-out;
+        animation-iteration-count: infinite; 
+        -webkit-animation: pulsate 1s ease-out;
+        -webkit-animation-iteration-count: infinite; 
+      } 
+
+      @-webkit-keyframes pulsate {
+        0% {opacity: 0.1;}
+        50% {opacity: 1.0;}
+        100% {opacity: 0.1;}
+      }
+      @keyframes pulsate {
+        0% {opacity: 0.1;}
+        50% {opacity: 1.0;}
+        100% {opacity: 0.1;}
+      }
+
+      body.loading .tl_page_wrap, body.publishing .tl_page_wrap {
+        opacity:0;
+      }
+      body.loading::before {
+        content: 'Loading...';  display:block;
+      }
+      body.publishing::before {
+        content: 'Publishing...';  display:block;
+      }

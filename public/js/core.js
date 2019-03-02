@@ -1305,6 +1305,7 @@ function showError(error) {
 
 
 async function savePage() {
+    alert($('#richEditor'));
     if ($tl_article.hasClass('tl_article_saving')) {
         return false;
     }
@@ -1663,6 +1664,7 @@ let $embed_button = $('#_embed_button');
 let $edit_button = $('#_edit_button');
 let $publish_button = $('#_publish_button');
 let $login_button = $('#_login_button')
+var $rich_editor = $('richEditor')
 
 let $account = $('.account');
 let $error_msg = $('#_error_msg');
@@ -1872,6 +1874,7 @@ $embed_button.click(function (e) {
 });
 
 $publish_button.click(function () {
+    alert("button pushed");
     savePage();
 });
 
