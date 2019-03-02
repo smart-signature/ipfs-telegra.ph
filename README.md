@@ -5,6 +5,9 @@ This is the Website Frontend of Smart Signature Prototype. This repo is cloned f
 欢迎来到 Smart Signature Prototype 的前端代码仓库。本代码克隆自 [ipfs-telegra.ph](https://github.com/alexstep/ipfs-telegra.ph)。作为 Prototype，这份代码将贯彻最小可用的原则，实现 [原型合约](https://github.com/smart-signature/smart-signature-EOS-contract) 中的方法。
 
 ## Develop
+
+###开发时请注意清除浏览器缓存###
+
 ```
 git clone https://github.com/smart-signature/prototype-website
 cd prototype-website
