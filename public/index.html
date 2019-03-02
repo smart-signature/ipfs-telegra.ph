@@ -39,6 +39,9 @@
 
     <link href="./css/quill.core.css" rel="stylesheet">
     <link href="./css/core.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                  
+
 
     <!-- p2p cache CDN https://www.cachep2p.com/ -->
     <script src="./js/cachep2p.min.js"></script>
@@ -55,7 +58,8 @@
         <button id="_login_button" class="button login_button" onclick="login()">Login</button>
         <a href="/timeline.html"><button id="_login_button" class="button login_button">timeline</button></a>
         <button id="_login_button" class="button login_button" onclick="touserpage()">userpage</button>
-
+        <button id="_publish_button" class="button publish_button">Publish</button>
+        
         <main class="tl_article">
           <header class="tl_article_header">
             <h1 dir="auto"></h1>
@@ -64,44 +68,67 @@
            --><time datetime=""></time>
             </address>
           </header>
-          <article id="_tl_editor" class="tl_article_content"><h1><br></h1><address><br></address><p><br></p></article>
-          <div id="_tl_link_tooltip" class="tl_link_tooltip"></div>
-          <div id="_tl_tooltip" class="tl_tooltip">
-            <div class="buttons">
-              <span class="button_hover"></span>
-              <span class="button_group"><!--
-             --><button id="_bold_button"></button><!--
-             --><button id="_italic_button"></button><!--
-             --><button id="_link_button"></button><!--
-           --></span><!--
-           --><span class="button_group"><!--
-             --><button id="_header_button"></button><!--
-             --><button id="_subheader_button"></button><!--
-             --><button id="_quote_button"></button><!--
-           --></span>
-            </div>
-            <div class="prompt">
-              <span class="close"></span>
-              <div class="prompt_input_wrap"><input type="url" class="prompt_input" /></div>
-            </div>
-          </div>
-          <div id="_tl_blocks" class="tl_blocks">
-            <div class="buttons">
-              <button id="_image_button"></button><!--
-           --><button id="_embed_button"></button>
-            </div>
-          </div>
-          <aside class="tl_article_buttons">
-            <div class="account account_top"></div>
-            <button id="_clear_button" class="button clear_button">Clear</button><!--
-         --><button id="_publish_button" class="button publish_button">Publish</button>
-            <div class="account account_bottom"></div>
-            <div id="_error_msg" class="error_msg"></div>
-          </aside>
+   
 
-          <div id="richEditor">
-            <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
-          </div>
+
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="telegraph-tab" data-toggle="tab" href="#telegraph" role="tab" aria-controls="Default" aria-selected="true">Telegra.ph</a>           
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="rich-tab" data-toggle="tab" href="#rich" role="tab" aria-controls="Rich" aria-selected="false">Rich</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="markdown-tab" data-toggle="tab" href="#markdown" role="tab" aria-controls="Markdown" aria-selected="false">MarkDown</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="telegraph" role="tabpanel" aria-labelledby="telegraph-tab">
+                <article id="_tl_editor" class="tl_article_content"><h1><br></h1><address><br></address><p><br></p></article>
+                <div id="_tl_link_tooltip" class="tl_link_tooltip"></div>
+                <div id="_tl_tooltip" class="tl_tooltip">
+                  <div class="buttons">
+                    <span class="button_hover"></span>
+                    <span class="button_group"><!--
+                   --><button id="_bold_button"></button><!--
+                   --><button id="_italic_button"></button><!--
+                   --><button id="_link_button"></button><!--
+                 --></span><!--
+                 --><span class="button_group"><!--
+                   --><button id="_header_button"></button><!--
+                   --><button id="_subheader_button"></button><!--
+                   --><button id="_quote_button"></button><!--
+                 --></span>
+                  </div>
+                  <div class="prompt">
+                    <span class="close"></span>
+                    <div class="prompt_input_wrap"><input type="url" class="prompt_input" /></div>
+                  </div>
+                </div>
+                <div id="_tl_blocks" class="tl_blocks">
+                  <div class="buttons">
+                    <button id="_image_button"></button><!--
+                 --><button id="_embed_button"></button>
+                  </div>
+                </div>
+                <aside class="tl_article_buttons">
+                  <div class="account account_top"></div>
+                  <button id="_clear_button" class="button clear_button">Clear</button>
+                  <div class="account account_bottom"></div>
+                  <div id="_error_msg" class="error_msg"></div>
+                </aside>   
+
+            </div>            
+            <div class="tab-pane fade" id="rich" role="tabpanel" aria-labelledby="rich-tab">
+              <div id="richEditor">
+                <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="markdown" role="tabpanel" aria-labelledby="markdown-tab">
+              <div id="main">
+              </div>              
+            </div> 
+          </div>          
 
           <script type="text/javascript" src="https://unpkg.com/wangeditor@3.1.1/release/wangEditor.min.js"></script>
           <script type="text/javascript">
@@ -114,12 +141,17 @@
           </script>
 
           <br/>
+          <!-- Bootstrap CSS -->
 
           <link href="css/mavon.css" rel="stylesheet">
           <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
           <script src="js/mavon-editor.js"></script>
-          <div id="main">
-          </div>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
           <script>
               Vue.use(window['mavon-editor'])
               new Vue({
