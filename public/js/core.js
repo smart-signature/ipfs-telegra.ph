@@ -1331,10 +1331,10 @@ async function savePage() {
         $tl_article.addClass('tl_article_saving');
         updateEditable(false);
 
-        var content = getPageContent(true)
-        var $c = $(content); $c.find('h1').remove(); $c.find('address').remove();
-        var content_text = $c.text()
-        var desc = content_text.substr(0, 140);
+        var content = gettext()
+        //var $c = $(content); $c.find('h1').remove(); $c.find('address').remove();
+        //var content_text = $c.text()
+        var desc = content.substr(0, 140);
 
         var page_html = renderPostPage(title, desc, author, content)
         // Create html page in IPFS
