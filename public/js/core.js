@@ -1305,7 +1305,7 @@ function showError(error) {
 
 
 async function savePage() {
-    alert($('#richEditor'));
+    // alert($('#richEditor'));
     if ($tl_article.hasClass('tl_article_saving')) {
         return false;
     }
@@ -1874,7 +1874,7 @@ $embed_button.click(function (e) {
 });
 
 $publish_button.click(function () {
-    alert("button pushed");
+    // alert("button pushed");
     savePage();
 });
 
