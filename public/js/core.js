@@ -1309,10 +1309,35 @@ async function savePage() {
     if ($tl_article.hasClass('tl_article_saving')) {
         return false;
     }
-
-    let title = $('h1', $tl_content).text();
-    let author = $('address', $tl_content).text();
-    let author_url = $('address a', $tl_content).attr('href') || '';
+    // $('#myTab').tabs({
+    //     activate: function (event, ui) {
+    //         alert("doing")
+    //     var $activeTab = $('#tabs').tabs('option', 'active');
+    //     if ($activeTab == 1) {
+    //     // HERE YOU CAN ADD CODE TO RUN WHEN THE SECOND TAB HAS BEEN CLICKED
+    //         }
+    //     }
+    // })
+    var title;
+    var author;
+    var content;
+    if ($('#telegraph').attr("class").indexOf("active") != -1){
+        var contentt = getPageContent(true)
+        title = $('h1', $tl_content).text();
+        author = $('address', $tl_content).text();
+        var $c = $(contentt); $c.find('h1').remove(); $c.find('address').remove();
+        content = $c.text()
+    }
+    if ($('#rich').attr("class").indexOf("active") != -1){
+        title = '(no title)'
+        author = '(no author)'
+        content = gettext();
+    }
+    if ($('#markdown').attr("class").indexOf("active") != -1){
+        title = '(no title)'
+        author = '(no author)'
+        content = this.mavonvue.markdownvalue
+    }
 
     if (title.length < 2) {
         clearTimeout($tl_article.to);
@@ -1330,11 +1355,11 @@ async function savePage() {
         $('body').addClass('publishing')
         $tl_article.addClass('tl_article_saving');
         updateEditable(false);
-
-        var content = gettext()
-        //var $c = $(content); $c.find('h1').remove(); $c.find('address').remove();
-        //var content_text = $c.text()
-        var desc = content.substr(0, 140);
+        
+        // var content = gettext()
+        // var $c = $(content); $c.find('h1').remove(); $c.find('address').remove();
+        // var content_text = $c.text()
+        // var desc = content.substr(0, 140);
 
         var page_html = renderPostPage(title, desc, author, content)
         // Create html page in IPFS
