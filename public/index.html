@@ -125,7 +125,7 @@
               </div>
             </div>
             <div class="tab-pane fade" id="markdown" role="tabpanel" aria-labelledby="markdown-tab">
-              <div id="main">
+              <div id="app">
               </div>              
             </div> 
           </div>          
@@ -155,15 +155,18 @@
           <script>
               Vue.use(window['mavon-editor'])
               new Vue({
-                  'el': '#main',
+                  'el': '#app',
                   data:{
-                      value: "markdown编辑器"
+                      markdownvalue: "markdown编辑器"
                   },
-                  template:'<mavon-editor v-model="value" ref=md @imgAdd="$imgAdd"></mavon-editor>',
+                  template:'<mavon-editor v-model="markdownvalue" ref=md @imgAdd="$imgAdd"></mavon-editor>',
                   methods: {
                       $imgAdd: function (pos, file) {
                       //在这里上传图片
-                      }
+                      },
+                  },
+                  created(){
+                    window.mavonvue = this;
                   }
               })
           </script>
