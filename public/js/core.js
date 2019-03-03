@@ -1663,6 +1663,7 @@ let $embed_button = $('#_embed_button');
 
 let $edit_button = $('#_edit_button');
 let $publish_button = $('#_publish_button');
+let $withdraw_button = $('#_withdraw_button');
 let $login_button = $('#_login_button')
 var $rich_editor = $('richEditor')
 
@@ -1871,6 +1872,11 @@ $embed_button.click(function (e) {
             hideBlocksTooltip();
         }
     }
+});
+
+$withdraw_button.click(function () {
+    // alert("button pushed");
+    withdraw();
 });
 
 $publish_button.click(function () {

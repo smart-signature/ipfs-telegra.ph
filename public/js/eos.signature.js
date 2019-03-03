@@ -125,9 +125,7 @@ function logout() {
 }
 
 const publish =  function(callback){
-  if (currentAccount == null) {
-      alert('请先登录');
-  }
+  if (currentAccount == null) { alert('请先登录'); }
 
   var eos = scatter.eos(network, Eos);
 
@@ -153,6 +151,31 @@ const publish =  function(callback){
   });
 }
 
+const withdraw =  function(callback){
+  if (currentAccount == null) { alert('请先登录'); }
+
+  var eos = scatter.eos(network, Eos);
+
+  eos.transaction({
+      actions: [
+          {
+              account: 'signature.bp',
+              name:    'claim',
+              authorization: [{
+                  actor:      currentAccount.name,
+                  permission: currentAccount.authority
+              }],
+              data: {
+              from:    currentAccount.name,
+              }
+          }
+      ]
+  }).then(result => {
+      callback(result.transaction_id,currentAccount.name);
+  }).catch(error => {
+    alert('error:'+JSON.stringify(error));
+  });
+}
 
 function transferEOS({memo = '',amount = 0}){
   if (currentAccount == null) {
