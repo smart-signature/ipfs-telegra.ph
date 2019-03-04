@@ -107,11 +107,14 @@ function login() {
       alert(`Login success：${JSON.stringify(identity.accounts[0].name)}`);
       console.log(`Login success：${JSON.stringify(identity.accounts[0].name)}`);
       checkAccount();
+
+      //set username to vuejs instance data
+      setUsername(JSON.stringify(identity.accounts[0].name))
     }, function (error) {
       console.log(`Login error：${JSON.stringify(error)}，Please refresh page.`);
     });
   });
-  return JSON.stringify(identity.accounts[0].name) ;
+  
 }
 
 function logout() {

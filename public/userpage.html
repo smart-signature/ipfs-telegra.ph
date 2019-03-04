@@ -175,7 +175,7 @@
             }
         });
 
-        new Vue({
+        var vm = new Vue({
             el: '#app',
 
             data: {
@@ -227,10 +227,16 @@
             },
             methods: {
                 login: function () {
-                    this.username = login();
+                    login();
                 },
             },
         });
+        
+        //set username to vue instance
+        setUsername = function (username) {
+            username = username.replace(/['"]+/g, '')
+            vm.username = username;
+        }
     </script>
     <link href="./css/core.css" rel="stylesheet">
 
