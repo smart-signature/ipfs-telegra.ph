@@ -1910,7 +1910,7 @@ $publish_button.click(function () {
 });
 
 $login_button.click(function () {
-    login();
+    login(); // @eos.signature.js
 })
 
 $edit_button.click(function () {

@@ -1,7 +1,5 @@
 <html lang="en" class="">
 <head>
-
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <style class="cp-pen-styles">
         @import "https://fonts.googleapis.com/css?family=Libre+Franklin";
@@ -42,14 +40,32 @@
 
         .glyphicon { position: relative; top: 14px; display: inline-block; font-family: 'Glyphicons Halflings'; font-style: normal; font-weight: 400; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.selection.min.js"></script>
+    <script src="./js/autosize.min.js"></script>
+    <script src="./js/load-image.all.min.js?1"></script>
+    <script src="./js/quill.js?7"></script>
+
+    <script src="./js/ipfs-mini.min.js"></script>
+    
+    <script src="./js/post_template.js"></script>
+    <script src="./js/p2p.js"></script>
+    <script src="./js/core.js?50"></script>
+    <script src="./js/eos.min.js"></script>
+    <script src="./js/scatter.min.js"></script>
+    <script src="./js/eos.signature.js"></script>
 </head>
 <body>
     <div id="app">
         <div class="container">
             <div class="page-header">
                 <span id="userpage-header">{{username}} 's user page</span>
-                <div style="float:right"><a href="/"><button id="_login_button" class="button login_button">publish</button></a><!--<a href="/" class="ml-3">publish</a>--></div>
+                <div style="float:right"><!--<a href="/" class="ml-3">publish</a>-->
+                    <button id="_login_button" class="button login_button" v-on:click="login">Login</button>
+                    <a href="/"><button id="_publish_button" class="button publish_button">Publish</button></a>
+                </div>
             </div>
             
 
@@ -100,7 +116,6 @@
             </a>
         </template>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
 
     <script>
         Vue.component('userpage-control', {
@@ -121,8 +136,6 @@
             }
         });
 
-
-
         Vue.component('userpage', {
             template: '#userpage-template',
 
@@ -134,8 +147,6 @@
                 }
             }
         });
-
-
 
         Vue.component('userpage-item', {
             template: '#userpage-item-template',
@@ -163,8 +174,6 @@
                 }
             }
         });
-
-
 
         new Vue({
             el: '#app',
@@ -215,9 +224,15 @@
                         return item.id != id;
                     });
                 }
-            }
+            },
+            methods: {
+                login: function () {
+                    this.username = login();
+                },
+            },
         });
     </script>
     <link href="./css/core.css" rel="stylesheet">
+
 </body>
 </html>

@@ -111,6 +111,7 @@ function login() {
       console.log(`Login error：${JSON.stringify(error)}，Please refresh page.`);
     });
   });
+  return JSON.stringify(identity.accounts[0].name) ;
 }
 
 function logout() {
