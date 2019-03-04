@@ -1329,15 +1329,19 @@ async function savePage() {
         content = $c.text()
     }
     if ($('#rich').attr("class").indexOf("active") != -1){
-        title = '(no title)'
-        author = '(no author)'
+        title = $('#richtitle')[0].value;
+        author = $('#richauthor')[0].value
         content = gettext();
     }
     if ($('#markdown').attr("class").indexOf("active") != -1){
-        title = '(no title)'
-        author = '(no author)'
+        title = $('#markdowntitle')[0].value;
+        author = $('#markdownauthor')[0].value
         content = this.mavonvue.markdownvalue
     }
+
+    // console.log(title);
+    // console.log(author);
+    // console.log(content);
 
     if (title.length < 2) {
         clearTimeout($tl_article.to);
