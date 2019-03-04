@@ -270,6 +270,17 @@ async function getSignsInfo() {
   return rows;
 }
 
+async function getGoods() {
+  const { rows } = await eos.getTableRows({
+    json: true,
+    code: 'signature.bp',
+    scope: 'signature.bp',
+    table: 'goods',
+    limit: 10000,
+  });
+  return rows;
+}
+
 async function getMaxShareId() {
   var rows = await getSharesInfo();
   var len = rows.length;
