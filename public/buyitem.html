@@ -1,33 +1,67 @@
 <html lang="en" class="">
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+    />
     <script src="./js/jquery.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="app">
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <div class="container">
-            <div class="page-header">
-                    <button id="_login_button" class="button login_button" onclick="login()">Login</button>
-                <span id="timeline-header">Goods</span>
-                <div style="float:right"><a href="/"><button id="_login_button" class="button login_button">publish</button></a><!--<a href="/" class="ml-3">publish</a>--></div>
-            </div>
+      <script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"
+      ></script>
+      <div class="container">
+        <div class="page-header">
+          <button
+            id="_login_button"
+            class="button login_button"
+            onclick="login()"
+          >
+            Login
+          </button>
+          <span id="timeline-header">Goods</span>
+          <div style="float:right">
+            <a href="/"
+              ><button id="_login_button" class="button login_button">
+                publish
+              </button></a
+            ><!--<a href="/" class="ml-3">publish</a>-->
+          </div>
         </div>
-        <div class="container">
-            <label class="col-sm-3">Email</label>
-            <span class="col-sm-10">
-                <input type="text" style="padding-top:10px;margin-bottom:10px;" class="form-control" id="emailinput" placeholder="Your name">
-            </span>
-        </div>
-        <div class="container">
-            <ul class="list-group">
-                <li v-for="(i,item) in times" :key="i" class="list-group-item">
-                    <button type="button" class="btn btn-default btn-xs" style="float:right" @click="buyitem(item)">Buy</button>
-                        <!-- <span class="badge">新</span> -->
-                    id:{{item.id}} seller:{{item.seller}} price:{{item.price/10000}} 
-                </li>
-            </ul>
-        </div>
+      </div>
+      <div class="container">
+        <label class="col-sm-3">Email</label>
+        <span class="col-sm-10">
+          <input
+            type="text"
+            style="padding-top:10px;margin-bottom:10px;"
+            class="form-control"
+            id="emailinput"
+            placeholder="Your name"
+          />
+        </span>
+      </div>
+      <div class="container">
+        <ul class="list-group">
+          <li v-for="(i,item) in times" :key="i" class="list-group-item">
+            <button
+              type="button"
+              class="btn btn-default btn-xs"
+              style="float:right"
+              @click="buyitem(item)"
+            >
+              Buy
+            </button>
+            <!-- <span class="badge">新</span> -->
+            id:{{ item.id }} seller:{{ item.seller }} price:{{
+              item.price / 10000
+            }}
+          </li>
+        </ul>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
@@ -36,44 +70,64 @@
     <script src="./js/eos.signature.js"></script>
 
     <script>
-        new Vue({
-            el: '#app',
+      // https://segmentfault.com/q/1010000005162727
+      function CreateXMLHttpRequest() {
+        if (window.ActiveXObject) {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        } else if (window.XMLHttpRequest) {
+          xmlhttp = new XMLHttpRequest();
+        }
+      }
+      function callhandle() {
+        if (xmlhttp.readyState == 4) {
+          if (xmlhttp.status == 200) {
+            alert(xmlhttp.responseText);
+          }
+        }
+      }
+      new Vue({
+        el: "#app",
 
-            data: {
-                times: []
-            },
-            created: async function () {
-                this.times = await window.getGoods();
-                console.log(this.times);
-            },
-            methods: {
-                buyitem(item){
-                    const email = $('#emailinput')[0].value;
-                    // alert('我不知道怎么用这个email，反正你的email是' + email);
-                    /* 
-                        例子
-                        curl -d "username=minakokojima&mail=251815992@qq.com" -X POST https://ipfs.libra.bet/submitmail
-                    */
+        data: {
+          times: []
+        },
+        created: async function() {
+          this.times = await window.getGoods();
+          console.log(this.times);
+        },
+        methods: {
+          buyitem(item) {
+            const email = $("#emailinput")[0].value;
+            // alert('我不知道怎么用这个email，反正你的email是' + email);
+            /* 
+                例子
+                curl -d "username=minakokojima&mail=251815992@qq.com" -X POST https://ipfs.libra.bet/submitmail
+            */
 
-                    const username = window.getAccountName();
-                    var url = "https://ipfs.libra.bet/submitmail";
-                    var arg = "username=" + username + "&mail=" + email;
+            // 发送 post 请求，设置 email 地址
+            const username = window.getAccountName();
+            var url = "https://ipfs.libra.bet/submitmail";
+            var arg = "username=" + username + "&mail=" + email;
+            CreateXMLHttpRequest();
+            xmlhttp.onreadystatechange = callhandle;
+            xmlhttp.open("POST", url, true);
+            xmlhttp.setRequestHeader(
+              "Content-Type",
+              "application/x-www-form-urlencoded;"
+            );
+            xmlhttp.send(arg);
 
-                    CreateXMLHttpRequest();
-                    xmlhttp.onreadystatechange = callhandle;
-                    xmlhttp.open("POST", url, true);
-                    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");  //用POST的时候一定要有这句
-                    xmlhttp.send(arg);
-                
-                    window.transferEOS({
-                        amount: item.price/10000,
-                        memo: `buy ${item.id}`
-                    })
-                }
-            }
-        });
+            // todo(minakokojima): 转账请求应该作为 post 请求的回执
+            // 发起转账请求
+            window.transferEOS({
+              amount: item.price / 10000,
+              memo: `buy ${item.id}`
+            });
+          }
+        }
+      });
     </script>
 
-    <link href="./css/core.css" rel="stylesheet">
-</body>
+    <link href="./css/core.css" rel="stylesheet" />
+  </body>
 </html>
