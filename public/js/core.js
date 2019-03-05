@@ -1364,7 +1364,7 @@ async function savePage() {
         // var $c = $(content); $c.find('h1').remove(); $c.find('address').remove();
         // var content_text = $c.text()
         // var desc = content.substr(0, 140);
-
+        var desc = content.substr(0, 140);
         var page_html = renderPostPage(title, desc, author, content)
         // Create html page in IPFS
         save2IPFS(page_html, function (err, datahash) {
