@@ -1,40 +1,32 @@
 <html lang="en" class="">
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-    />
-    <script src="./js/jquery.min.js"></script>
-  </head>
-  <body>
-    <div id="app">
-      <script
-        src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"
-      ></script>
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+  <script src="./js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
       <div class="container">
         <div class="page-header">
-          <button
-            id="_login_button"
-            class="button login_button"
-            onclick="login()"
-          >
+          <button id="_login_button" class="button login_button" onclick="login()">
             Login
           </button>
 
-          <button
-            type="button"
-            class="button login_button"
-            @click="buyitem(item)"
-          >
+          <button type="button" class="button login_button" @click="buyitem(item)">
             Buy
+          </button>
+
+          <button type="button" class="button login_button" @click="share(item)">
+            Share
+            <input id="share"  type="text" style="opacity: 0.01;width: 10px;"  >
           </button>
 
           <span id="timeline-header">Goods</span>
           <div style="float:right">
-            <a href="/"
-              ><button id="_login_button" class="button login_button">
+            <a href="/"><button id="_login_button" class="button login_button">
                 publish
               </button></a
             ><!--<a href="/" class="ml-3">publish</a>-->
@@ -42,7 +34,7 @@
         </div>
       </div>
       <div class="container">
-        <label class="col-sm-3">Email</label>
+        <label class="col-sm-3">我的 Email</label>
         <span class="col-sm-10">
           <input
             type="text"
@@ -52,6 +44,9 @@
             placeholder="Your Email Address"
           />
         </span>
+        <button type="button" class="button login_button" @click="changeEmail()">
+            Change
+        </button>
       </div>
       <div class="container">
         <ul class="list-group">
@@ -72,9 +67,7 @@
                 商品名称：This Is Not A Jumping Game
               </li>
               <li class="list-group-item">
-                Steam 链接：<a
-                  href="https://store.steampowered.com/app/745890/This_Is_Not_A_Jumping_Game/"
-                  >https://store.steampowered.com/app/745890/This_Is_Not_A_Jumping_Game/</a
+                Steam 链接：<a href="https://store.steampowered.com/app/745890/This_Is_Not_A_Jumping_Game/">https://store.steampowered.com/app/745890/This_Is_Not_A_Jumping_Game/</a
                 >
               </li>
             </ul>
@@ -84,6 +77,10 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+    
+    <!--<script src="https://unpkg.com/vue@2.1.10/dist/vue.js"></script>-->
+    <script src="https://unpkg.com/vue-resource@1.2.0/dist/vue-resource.min.js"></script>
+
     <script src="./js/eos.min.js"></script>
     <script src="./js/scatter.min.js"></script>
     <script src="./js/eos.signature.js"></script>
@@ -100,7 +97,7 @@
       function callhandle() {
         if (xmlhttp.readyState == 4) {
           if (xmlhttp.status == 200) {
-            alert(xmlhttp.responseText);
+            // alert(xmlhttp.responseText);
           }
         }
       }
@@ -110,40 +107,96 @@
         data: {
           times: []
         },
-        created: async function() {
+        created: async function () {
           this.times = await window.getGoods();
           console.log(this.times);
         },
         methods: {
-          buyitem(item) {
+          share(item) {
+            var copyText = document.getElementById("share");
+
+            const username = window.getAccountName();
+
+            var share_url = window.location.origin + "/buyitem?ref=" + username;
+
+            console.log("share_url:", share_url);
+
+            copyText.value = share_url;
+
+            /* Select the text field */
+            copyText.select();
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            alert('Url copied to clippboard');
+          },
+
+          getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+              results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+          },
+
+          changeEmail() {
+
             const email = $("#emailinput")[0].value;
             // alert('我不知道怎么用这个email，反正你的email是' + email);
             /* 
                 例子
                 curl -d "username=minakokojima&mail=251815992@qq.com" -X POST https://ipfs.libra.bet/submitmail
             */
-
             // 发送 post 请求，设置 email 地址
             const username = window.getAccountName();
-            var url = "https://ipfs.libra.bet/submitmail";
-            var arg = "username=" + username + "&mail=" + email;
-            CreateXMLHttpRequest();
-            xmlhttp.onreadystatechange = callhandle;
-            xmlhttp.open("POST", url, true);
-            xmlhttp.setRequestHeader(
-              "Content-Type",
-              "application/x-www-form-urlencoded;"
-            );
-            xmlhttp.send(arg);
+            // var url = "https://ipfs.libra.bet/submitmail";
+            // var arg = "username=" + username + "&mail=" + email;
+            // CreateXMLHttpRequest();
+            // xmlhttp.onreadystatechange = callhandle;
+            // xmlhttp.open("POST", url, true);
+            // xmlhttp.setRequestHeader(
+            //   "Content-Type",
+            //   "application/x-www-form-urlencoded;"
+            // );
+            // xmlhttp.send(arg);
+            // alert('修改邮件成功。');
 
+            Vue.http.post('https://ipfs.libra.bet/submitmail', { "username": username, "mail": email }, { 'emulateJSON': true }).then((res) => {
+              console.log(res)
+              alert('修改邮件成功。');
+            }, (err) => {
+              //
+            })
+
+          },
+
+          buyitem(item) {
+            console.log(item)
+
+            if (!item) {
+              item = this.times[0];
+              console.log(this.times);
+            }
             // todo(minakokojima): 转账请求应该作为 post 请求的回执
             // 发起转账请求
             // todo(deaso): 回执中的邀请人写在memo后面，格式:buy 0 minakokojima
 
+            var memo = `buy ${item.id}`;
+
+            var ref = this.getParameterByName('ref');
+
+            if (ref) {
+              memo = `buy ${item.id} ${ref}`;
+            }
+
             window.transferEOS({
               amount: item.price / 10000,
-              memo: `buy ${item.id}`
+              memo: memo
             });
+
           }
         }
       });
