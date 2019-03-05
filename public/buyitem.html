@@ -166,6 +166,7 @@
 
             Vue.http.post('https://ipfs.libra.bet/submitmail', { "username": username, "mail": email }, { 'emulateJSON': true }).then((res) => {
               console.log(res)
+              alert('修改邮件成功。');
             }, (err) => {
               //
             })
