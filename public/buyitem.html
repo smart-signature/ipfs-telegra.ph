@@ -11,8 +11,12 @@
       crossorigin="anonymous"></script>
       <div class="container">
         <div class="page-header">
-          <button id="_login_button" class="button login_button" onclick="login()">
+          <button id="_login_button" class="button login_button" @click="eoslogin()" 
+          v-if="accountname == '' || accountname == true">
             Login
+          </button>
+          <button id="_login_button" class="button login_button" v-else>
+            {{accountname}}
           </button>
 
           <button type="button" class="button login_button" @click="buyitem(item)">
@@ -21,7 +25,7 @@
 
           <button type="button" class="button login_button" @click="share(item)">
             Share
-            <input id="share"  type="text" style="opacity: 0.01;width: 10px;"  >
+            <!-- <input id="share"  type="text" style="opacity: 0.01;width: 10px;"  > -->
           </button>
 
           <span id="timeline-header">Goods</span>
@@ -105,7 +109,9 @@
         el: "#app",
 
         data: {
-          times: []
+          times: [],
+          accountname: '',
+          email: '',
         },
         created: async function () {
           this.times = await window.getGoods();
@@ -180,6 +186,7 @@
               item = this.times[0];
               console.log(this.times);
             }
+
             // todo(minakokojima): 转账请求应该作为 post 请求的回执
             // 发起转账请求
             // todo(deaso): 回执中的邀请人写在memo后面，格式:buy 0 minakokojima
@@ -197,6 +204,17 @@
               memo: memo
             });
 
+          },
+
+          async eoslogin(){
+            this.accountname = await asynclogin();
+            this.email = await this.getemail();
+          },
+
+          async getemail(){
+            const res = await Vue.http.post('https://ipfs.libra.bet/userinfo/' + window.getAccountName());
+            console.log(res);
+            return res;
           }
         }
       });

@@ -118,7 +118,27 @@ function login() {
       console.log(`Login error：${JSON.stringify(error)}，Please refresh page.`);
     });
   });
-  
+
+}
+
+async function asynclogin(){
+  if (!hasScatter()) {
+    alert('scatter required');
+    return;
+  }
+  const connected = await scatter.connect('SIGNATURE');
+  let that = this;
+  if (!hasScatter()) {
+    errorCallbak("scatter required");
+    return;
+  }
+  checkoutNetworks();
+  await scatter.suggestNetwork(network);
+  const requirements = { accounts: [network] };
+  const i = await scatter.getIdentity(requirements);
+  identity = i;
+  currentAccount = identity.accounts[0];
+  return JSON.stringify(identity.accounts[0].name);
 }
 
 function logout() {
