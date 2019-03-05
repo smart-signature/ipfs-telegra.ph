@@ -209,12 +209,13 @@
           async eoslogin(){
             this.accountname = await asynclogin();
             this.email = await this.getemail();
+            $("#emailinput")[0].value = this.email;
           },
 
           async getemail(){
-            const res = await Vue.http.post('https://ipfs.libra.bet/userinfo/' + window.getAccountName());
-            console.log(res);
-            return res;
+            const res = await Vue.http.get('https://ipfs.libra.bet/userinfo/' + window.getAccountName());
+            console.log(res.data.data.mail);
+            return res.data.data.mail;
           }
         }
       });
