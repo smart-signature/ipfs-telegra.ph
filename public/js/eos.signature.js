@@ -31,6 +31,10 @@ function hasScatter() {
   return scatter !== undefined;
 }
 
+function isLogin() {
+  return identity == null ;
+}
+
 function getAccountName() {
   return identity == null || identity.accounts == null || identity.accounts[0].name;
 }

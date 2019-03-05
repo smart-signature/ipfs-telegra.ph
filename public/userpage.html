@@ -63,7 +63,7 @@
             <div class="page-header">
                 <span id="userpage-header">{{username}} 's user page</span>
                 <div style="float:right"><!--<a href="/" class="ml-3">publish</a>-->
-                    <button id="_login_button" class="button login_button" v-on:click="login">Login</button>
+                    <button id="_login_button" class="button login_button" v-if="username == null" v-on:click="login">Login</button>
                     <a href="/"><button id="_publish_button" class="button publish_button">Publish</button></a>
                 </div>
             </div>
