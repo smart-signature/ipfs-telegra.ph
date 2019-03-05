@@ -19,7 +19,7 @@
             Buy
           </button>
 
-          <button type="button" class="button login_button"  @click="share(item)">
+          <button type="button" class="button login_button" @click="share(item)">
             Share
             <input id="share"  type="text" style="opacity: 0.01;width: 10px;"  >
           </button>
@@ -77,6 +77,10 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
+    
+    <!--<script src="https://unpkg.com/vue@2.1.10/dist/vue.js"></script>-->
+    <script src="https://unpkg.com/vue-resource@1.2.0/dist/vue-resource.min.js"></script>
+
     <script src="./js/eos.min.js"></script>
     <script src="./js/scatter.min.js"></script>
     <script src="./js/eos.signature.js"></script>
@@ -115,7 +119,7 @@
 
             var share_url = window.location.origin + "/buyitem?ref=" + username;
 
-            console.log("share_url:",share_url);
+            console.log("share_url:", share_url);
 
             copyText.value = share_url;
 
@@ -124,18 +128,18 @@
 
             /* Copy the text inside the text field */
             document.execCommand("copy");
-      
+
             alert('Url copied to clippboard');
           },
-          
+
           getParameterByName(name, url) {
-              if (!url) url = window.location.href;
-              name = name.replace(/[\[\]]/g, '\\$&');
-              var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                  results = regex.exec(url);
-              if (!results) return null;
-              if (!results[2]) return '';
-              return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+              results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
           },
 
           changeEmail() {
@@ -148,23 +152,30 @@
             */
             // 发送 post 请求，设置 email 地址
             const username = window.getAccountName();
-            var url = "https://ipfs.libra.bet/submitmail";
-            var arg = "username=" + username + "&mail=" + email;
-            CreateXMLHttpRequest();
-            xmlhttp.onreadystatechange = callhandle;
-            xmlhttp.open("POST", url, true);
-            xmlhttp.setRequestHeader(
-              "Content-Type",
-              "application/x-www-form-urlencoded;"
-            );
-            xmlhttp.send(arg);
-            alert('修改邮件成功。');
+            // var url = "https://ipfs.libra.bet/submitmail";
+            // var arg = "username=" + username + "&mail=" + email;
+            // CreateXMLHttpRequest();
+            // xmlhttp.onreadystatechange = callhandle;
+            // xmlhttp.open("POST", url, true);
+            // xmlhttp.setRequestHeader(
+            //   "Content-Type",
+            //   "application/x-www-form-urlencoded;"
+            // );
+            // xmlhttp.send(arg);
+            // alert('修改邮件成功。');
+
+            Vue.http.post('https://ipfs.libra.bet/submitmail', { "username": username, "mail": email }, { 'emulateJSON': true }).then((res) => {
+              console.log(res)
+            }, (err) => {
+              //
+            })
+
           },
 
           buyitem(item) {
             console.log(item)
 
-            if(!item){
+            if (!item) {
               item = this.times[0];
               console.log(this.times);
             }
@@ -174,9 +185,9 @@
 
             var memo = `buy ${item.id}`;
 
-            var ref  = this.getParameterByName('ref');
-            
-            if(ref){
+            var ref = this.getParameterByName('ref');
+
+            if (ref) {
               memo = `buy ${item.id} ${ref}`;
             }
 
