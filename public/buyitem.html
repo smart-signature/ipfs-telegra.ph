@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="container">
-        <label class="col-sm-3">Email</label>
+        <label class="col-sm-3">我的 Email</label>
         <span class="col-sm-10">
           <input
             type="text"
@@ -44,6 +44,9 @@
             placeholder="Your Email Address"
           />
         </span>
+        <button type="button" class="button login_button" @click="changeEmail()">
+            Change
+        </button>
       </div>
       <div class="container">
         <ul class="list-group">
@@ -135,13 +138,7 @@
               return decodeURIComponent(results[2].replace(/\+/g, ' '));
           },
 
-          buyitem(item) {
-            console.log(item)
-
-            if(!item){
-              item = this.times[0];
-              console.log(this.times);
-            }
+          changeEmail() {
 
             const email = $("#emailinput")[0].value;
             // alert('我不知道怎么用这个email，反正你的email是' + email);
@@ -149,7 +146,6 @@
                 例子
                 curl -d "username=minakokojima&mail=251815992@qq.com" -X POST https://ipfs.libra.bet/submitmail
             */
-
             // 发送 post 请求，设置 email 地址
             const username = window.getAccountName();
             var url = "https://ipfs.libra.bet/submitmail";
@@ -162,7 +158,16 @@
               "application/x-www-form-urlencoded;"
             );
             xmlhttp.send(arg);
+            alert('修改邮件成功。');
+          },
 
+          buyitem(item) {
+            console.log(item)
+
+            if(!item){
+              item = this.times[0];
+              console.log(this.times);
+            }
             // todo(minakokojima): 转账请求应该作为 post 请求的回执
             // 发起转账请求
             // todo(deaso): 回执中的邀请人写在memo后面，格式:buy 0 minakokojima
