@@ -49,7 +49,22 @@
             methods: {
                 buyitem(item){
                     const email = $('#emailinput')[0].value;
-                    alert('我不知道怎么用这个email，反正你的email是' + email);
+                    // alert('我不知道怎么用这个email，反正你的email是' + email);
+                    /* 
+                        例子
+                        curl -d "username=minakokojima&mail=251815992@qq.com" -X POST https://ipfs.libra.bet/submitmail
+                    */
+
+                    // todo(minakokojima): add username
+                    var url = "https://ipfs.libra.bet/submitmail";
+                    var arg = "username=" + username + "&mail=" + email;
+
+                    CreateXMLHttpRequest();
+                    xmlhttp.onreadystatechange = callhandle;
+                    xmlhttp.open("POST", url, true);
+                    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");  //用POST的时候一定要有这句
+                    xmlhttp.send(arg);
+                
                     window.transferEOS({
                         amount: item.price/10000,
                         memo: `buy ${item.id}`
