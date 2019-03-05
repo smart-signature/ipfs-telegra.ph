@@ -55,7 +55,7 @@
                         curl -d "username=minakokojima&mail=251815992@qq.com" -X POST https://ipfs.libra.bet/submitmail
                     */
 
-                    // todo(minakokojima): add username
+                    const username = window.getAccountName();
                     var url = "https://ipfs.libra.bet/submitmail";
                     var arg = "username=" + username + "&mail=" + email;
 
