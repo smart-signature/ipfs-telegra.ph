@@ -55,10 +55,14 @@
             >
               Buy
             </button>
-            <!-- <span class="badge">新</span> -->
-            id:{{ item.id }} seller:{{ item.seller }} price:{{
-              item.price / 10000
-            }}
+
+            <ul class="list-group">
+                <li class="list-group-item">商品编号：{{ item.id }}</li>
+                <li class="list-group-item">卖方账户：{{ item.seller }}</li>
+                <li class="list-group-item">商品价格：{{ item.price / 10000 }} EOS</li>
+                <li class="list-group-item">商品名称：This Is Not A Jumping Game</li>
+                <li class="list-group-item">Steam 链接：<a href="https://store.steampowered.com/app/745890/This_Is_Not_A_Jumping_Game/">https://store.steampowered.com/app/745890/This_Is_Not_A_Jumping_Game/</a></li>
+            </ul>
           </li>
         </ul>
       </div>
