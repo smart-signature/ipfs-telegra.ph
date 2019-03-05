@@ -49,7 +49,7 @@
             style="padding-top:10px;margin-bottom:10px;"
             class="form-control"
             id="emailinput"
-            placeholder="Your name"
+            placeholder="Your Email Address"
           />
         </span>
       </div>
@@ -131,6 +131,8 @@
 
             // todo(minakokojima): 转账请求应该作为 post 请求的回执
             // 发起转账请求
+            // todo(deaso): 回执中的邀请人写在memo后面，格式:buy 0 minakokojima
+
             window.transferEOS({
               amount: item.price / 10000,
               memo: `buy ${item.id}`
