@@ -66,14 +66,19 @@
                     <a href="/"><button id="_publish_button" class="button publish_button">Publish</button></a>
                 </div>
             </div>
-            
+            <ul class="list-group">
+                    <li class="list-group-item">签名收入：{{ user.sign_income }}</li>
+                    <li class="list-group-item">分享收入：{{ user.share_income }}</li>
+                  </ul>
+    
 
             <userpage :items="userpage"></userpage>
         </div>
 
         <span class="copy">
-            Based on an example from <a href="https://codepen.io/betdream">betdream</a>
+           <a href="https://codepen.io/betdream">betdream</a>
         </span>
+
 
 
 
