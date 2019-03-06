@@ -306,6 +306,17 @@ async function getGoods() {
   return rows;
 }
 
+async function getplayerincome(name) {
+  const { rows } = await eos.getTableRows({
+    json: true,
+    code: 'signature.bp',
+    scope: name,
+    table: 'players',
+    limit: 10000,
+  });
+  return rows;
+}
+
 async function getMaxShareId() {
   var rows = await getSharesInfo();
   var len = rows.length;
