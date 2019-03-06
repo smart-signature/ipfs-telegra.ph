@@ -1321,19 +1321,22 @@ async function savePage() {
     var title;
     var author;
     var content;
-    if ($('#telegraph').attr("class").indexOf("active") != -1){
+
+
+
+    if ($('#telegraph').attr("class").indexOf("active") != -1) {
         var contentt = getPageContent(true)
         title = $('h1', $tl_content).text();
         author = $('address', $tl_content).text();
         var $c = $(contentt); $c.find('h1').remove(); $c.find('address').remove();
         content = $c.text()
     }
-    if ($('#rich').attr("class").indexOf("active") != -1){
+    if ($('#rich').attr("class").indexOf("active") != -1) {
         title = $('#richtitle')[0].value;
         author = $('#richauthor')[0].value
         content = gettext();
     }
-    if ($('#markdown').attr("class").indexOf("active") != -1){
+    if ($('#markdown').attr("class").indexOf("active") != -1) {
         title = $('#markdowntitle')[0].value;
         author = $('#markdownauthor')[0].value
         content = this.mavonvue.markdownvalue
@@ -1359,77 +1362,165 @@ async function savePage() {
         $('body').addClass('publishing')
         $tl_article.addClass('tl_article_saving');
         updateEditable(false);
-        
+
         // var content = gettext()
         // var $c = $(content); $c.find('h1').remove(); $c.find('address').remove();
         // var content_text = $c.text()
         // var desc = content.substr(0, 140);
         var desc = content.substr(0, 140);
-        var page_html = renderPostPage(title, desc, author, content)
-        // Create html page in IPFS
-        save2IPFS(page_html, function (err, datahash) {
-            if (err) {
-                updateEditable(true);
-                var str = ''
-                if (typeof navigator !== 'undefined' && navigator.onLine === false) {
-                    str = 'maybe it because you OFFLINE?'
+
+        // var page_html = renderPostPage(title, desc, author, content)
+        // // Create html page in IPFS
+
+        // save2IPFS(page_html, function (err, datahash) {
+        //     if (err) {
+        //         updateEditable(true);
+        //         var str = ''
+        //         if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+        //             str = 'maybe it because you OFFLINE?'
+        //         }
+        //         return showError('SOME PROBLEM... \n' + err + '\n' + str);
+        //     }
+
+        //     if (!err && datahash) {
+
+        //         $.ajax({
+        //             url: 'https://smartsignature.azurewebsites.net/api/article',
+        //             dataType: 'json',
+        //             type: 'post',
+        //             contentType: 'application/json',
+        //             data: JSON.stringify({
+        //                 "account": accountName,
+        //                 "articleUrl": window.ipfs_gateway + datahash + '/',
+        //                 "title": title,
+        //                 "author": author,
+        //                 "transactionId": transId
+        //             }),
+        //             processData: false,
+        //             success: function (data, textStatus, jQxhr) {
+        //                 $tl_article.removeClass('tl_article_saving');
+        //                 $('body').removeClass('publishing')
+        //                 $tl_article.addClass('tl_article_editable');
+        //                 alert('发布成功');
+        //                 setTimeout(function () {
+        //                     location = location.protocol + "//" + location.host + "/timeline.html"
+        //                 }, 2000)
+        //             },
+        //             error: function (jqXhr, textStatus, errorThrown) {
+        //                 $tl_article.removeClass('tl_article_saving');
+        //                 $('body').removeClass('publishing')
+        //                 console.log(errorThrown);
+        //             }
+        //         });
+
+
+
+        //         //$.post("https://localhost:44334/api/article", {
+        //         //    "account": "qqq",
+        //         //    "articleId": datahash,
+        //         //    "title": title,
+        //         //    "author": author,
+        //         //    "transactionId": transId
+        //         //}, function (data) {
+        //         //    draftClear();
+        //         //    $tl_article.addClass('tl_article_editable');
+
+        //         //    setTimeout(function () {
+        //         //        location = window.ipfs_gateway + '/' + datahash + '/'
+        //         //    }, 50)
+        //         //    }, "json");
+
+
+
+        //     }
+        // })
+
+        var save_data = {
+            title: title,
+            desc: desc,
+            author: author,
+            content: content
+        };
+
+        console.log(save_data)
+
+
+        // var host = "http://localhost:3200"
+        var host = "https://ipfs.libra.bet"
+
+
+        $.ajax({
+            url: host + '/addJSON',
+            dataType: 'json',
+            type: 'post',
+            headers: {
+                Accept: "*/*",
+            },
+            data: {
+                data: save_data
+            },
+            // processData: false,
+            success: function (data, textStatus, jQxhr) {
+                console.log(data)
+
+                if (data.code == 200) {
+                    var datahash = data.hash
+
+                    $.ajax({
+                        url: 'https://smartsignature.azurewebsites.net/api/article',
+                        dataType: 'json',
+                        type: 'post',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            "account": accountName,
+                            "articleUrl":location.protocol + "//" + location.host + "/post?i=" + datahash ,
+                            "title": title,
+                            "author": author,
+                            "transactionId": transId
+                        }),
+                        processData: false,
+                        success: function (data, textStatus, jQxhr) {
+                            $tl_article.removeClass('tl_article_saving');
+                            $('body').removeClass('publishing')
+                            $tl_article.addClass('tl_article_editable');
+                            alert('发布成功');
+                            setTimeout(function () {
+                                location = location.protocol + "//" + location.host + "/timeline.html"
+                            }, 2000)
+                        },
+                        error: function (jqXhr, textStatus, errorThrown) {
+                            $tl_article.removeClass('tl_article_saving');
+                            $('body').removeClass('publishing')
+                            console.log(errorThrown);
+                        }
+                    });
+
                 }
-                return showError('SOME PROBLEM... \n' + err + '\n' + str);
-            }
-
-            if (!err && datahash) {
-
-                $.ajax({
-                    url: 'https://smartsignature.azurewebsites.net/api/article',
-                    dataType: 'json',
-                    type: 'post',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        "account": accountName,
-                        "articleUrl": window.ipfs_gateway + datahash + '/',
-                        "title": title,
-                        "author": author,
-                        "transactionId": transId
-                    }),
-                    processData: false,
-                    success: function (data, textStatus, jQxhr) {
-                        $tl_article.removeClass('tl_article_saving');
-                        $('body').removeClass('publishing')
-                        $tl_article.addClass('tl_article_editable');
-                        alert('发布成功');
-                        setTimeout(function () {
-                            location = location.protocol + "//" + location.host + "/timeline.html"
-                        }, 2000)
-                    },
-                    error: function (jqXhr, textStatus, errorThrown) {
-                        $tl_article.removeClass('tl_article_saving');
-                        $('body').removeClass('publishing')
-                        console.log(errorThrown);
-                    }
-                });
 
 
-
-                //$.post("https://localhost:44334/api/article", {
-                //    "account": "qqq",
-                //    "articleId": datahash,
-                //    "title": title,
-                //    "author": author,
-                //    "transactionId": transId
-                //}, function (data) {
-                //    draftClear();
-                //    $tl_article.addClass('tl_article_editable');
-
-                //    setTimeout(function () {
-                //        location = window.ipfs_gateway + '/' + datahash + '/'
-                //    }, 50)
-                //    }, "json");
-
-
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
 
             }
-        })
-        
+        });
+
+
+
+
+
+
+        // request({
+        //     uri: "https://ipfs.libra.bet/catJSON/QmeWimD5XSPCZktzw9kYwZDRQB1iwGkcZErEyWW5nSWT3B",
+        //     rejectUnauthorized: false,
+        //     json: true,
+        //     headers: { "Accept": '*/*' },
+        //     dataType: 'json',
+        //     method: "GET",
+        // }, function (error, response, body) {
+        //     console.log(body)
+        // });
+
+
     });
 
 

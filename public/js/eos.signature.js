@@ -175,7 +175,8 @@ const publish =  function(callback){
   }).then(result => {
       callback(result.transaction_id,currentAccount.name);
   }).catch(error => {
-    alert('error:'+JSON.stringify(error));
+
+    // alert('error:'+JSON.stringify(error));
   });
 }
 
