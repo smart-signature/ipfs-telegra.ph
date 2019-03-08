@@ -15,7 +15,6 @@ var files = [
 	'./js/cachep2p.min.js',
 	'./js/core.js',
 	'./js/ipfs-mini.min.js',
-	'./js/jquery.min.js',
 	'./js/jquery.selection.min.js',
 	'./js/p2p.js',
 	'./js/post_template.js',
